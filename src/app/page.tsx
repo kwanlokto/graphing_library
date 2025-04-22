@@ -15,6 +15,7 @@ import AlgorithmSelector from "@/ui/AlgorithmSelector";
 import Grid from "@/ui/Grid";
 import ThemeToggle from "@/ui/ThemeToggle";
 import { aStar } from "../algorithms/a_star";
+import { dijkstra } from "@/algorithms/dijkstra";
 
 const App = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -51,6 +52,7 @@ const App = () => {
     if (algorithm === "aStar") {
       foundPath = await aStar(grid, start, end, setGrid);
     } else if (algorithm === "dijkstra") {
+      foundPath = await dijkstra(grid, start, end, setGrid);
     }
 
     if (foundPath.length > 0) {

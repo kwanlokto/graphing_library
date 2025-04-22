@@ -1,5 +1,7 @@
 import { Coordinate, GridType, sleep } from "@/constants/grid";
 
+import { getNeighbors } from "./helper";
+
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.
  *
@@ -47,7 +49,7 @@ export const aStar = async (
     const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
     localGrid[current.row][current.col].isVisiting = true;
     setGrid(localGrid);
-    await sleep(100); // sleeps for 1 second
+    await sleep(100); // sleeps for 0.1 second
 
     // If we've reached the goal, reconstruct and return the path
     if (current.row === end.row && current.col === end.col) {
@@ -90,44 +92,6 @@ export const aStar = async (
 function heuristic(a: Coordinate, b: Coordinate): number {
   // Manhattan distance: horizontal + vertical distance
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
-
-/**
- * Retrieves all walkable neighboring cells (non-wall) from the given coordinate.
- * Only considers up, down, left, and right (no diagonals).
- *
- * @param param0 - The current coordinate (row, col).
- * @param grid - The grid to search within.
- * @returns An array of valid neighbor coordinates.
- */
-function getNeighbors({ row, col }: Coordinate, grid: GridType): Coordinate[] {
-  const neighbors: Coordinate[] = [];
-
-  // Directions: right, down, up, left
-  const directions = [
-    [0, 1], // right
-    [1, 0], // down
-    [-1, 0], // up
-    [0, -1], // left
-  ];
-
-  for (const [dr, dc] of directions) {
-    const r = row + dr;
-    const c = col + dc;
-
-    // Check boundaries and if cell is not a wall
-    if (
-      r >= 0 &&
-      r < grid.length &&
-      c >= 0 &&
-      c < grid[0].length &&
-      !grid[r][c].isWall
-    ) {
-      neighbors.push({ row: r, col: c });
-    }
-  }
-
-  return neighbors;
 }
 
 /**
