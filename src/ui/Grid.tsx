@@ -1,13 +1,15 @@
+import { Coordinate, GridType } from "@/constants/grid";
 import React, { useState } from "react";
 
 import { Box } from "@mui/material";
-import { GridType } from "@/constants/grid";
 
 interface GridProps {
   grid: GridType;
   setGrid: (grid: GridType) => void;
+  setStart: (end: Coordinate) => void;
+  setEnd: (end: Coordinate) => void;
 }
-const Grid = ({ grid, setGrid }: GridProps) => {
+const Grid = ({ grid, setGrid, setStart, setEnd }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const handleMouseDown = (row: number, col: number) => {
