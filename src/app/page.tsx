@@ -5,14 +5,16 @@ import React, { useState } from "react";
 
 import Grid from "../ui/Grid";
 import { aStar } from "../algorithms/a_star";
+import { createEmptyGrid } from "@/constants/grid";
 
 const Home = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [path, setPath] = useState([]);
+  const [grid, setGrid] = useState(createEmptyGrid(20, 20));
 
   const startPathfinding = () => {
     setIsRunning(true);
-    const grid = createEmptyGrid(); // Get the grid from your state
+    const grid = createEmptyGrid(20, 20); // Get the grid from your state
     const start = [0, 0]; // Start position
     const end = [19, 19]; // End position
 
@@ -40,7 +42,7 @@ const Home = () => {
       >
         {isRunning ? <CircularProgress size={24} /> : "Start Pathfinding"}
       </Button>
-      <Grid numRows={20} numCols={20}/>
+      <Grid grid={grid} setGrid={setGrid} />
       {path.length > 0 && <Box sx={{ marginTop: 2 }}>Path Found!</Box>}
     </Box>
   );

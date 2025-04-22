@@ -1,27 +1,14 @@
 import React, { useState } from "react";
 
 import { Box } from "@mui/material";
+import { GridType } from "@/constants/grid";
 
 interface GridProps {
-  numRows: number;
-  numCols: number;
+  grid: GridType;
+  setGrid: (grid: GridType) => void;
 }
-const Grid = ({ numRows, numCols }: GridProps) => {
-  const [grid, setGrid] = useState(createEmptyGrid());
+const Grid = ({ grid, setGrid }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
-  function createEmptyGrid() {
-    const grid = [];
-    for (let row = 0; row < numRows; row++) {
-      const currentRow = [];
-      for (let col = 0; col < numCols; col++) {
-        currentRow.push({ isStart: false, isEnd: false, isWall: false });
-      }
-      grid.push(currentRow);
-    }
-    grid[0][0].isStart = true;
-    grid[19][19].isEnd = true;
-    return grid;
-  }
 
   const handleMouseDown = (row: number, col: number) => {
     const newGrid = [...grid];
