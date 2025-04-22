@@ -11,9 +11,9 @@ import { Coordinate, createEmptyGrid } from "@/constants/grid";
 import React, { useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import AlgorithmSelector from "@/ui/AlgorithmSelector";
+import AlgorithmSelector from "@/ui/algorithm_selector";
 import Grid from "@/ui/Grid";
-import ThemeToggle from "@/ui/ThemeToggle";
+import ThemeToggle from "@/ui/theme_toggle";
 import { aStar } from "../algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
 
