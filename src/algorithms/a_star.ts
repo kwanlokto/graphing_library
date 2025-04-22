@@ -1,4 +1,4 @@
-import { Coordinate, GridType } from "@/constants/grid";
+import { Coordinate, GridType, sleep } from "@/constants/grid";
 
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.
@@ -9,11 +9,12 @@ import { Coordinate, GridType } from "@/constants/grid";
  * @returns An array of Coordinates representing the shortest path from start to end,
  *          or an empty array if no path is found.
  */
-export const aStar = (
+export const aStar = async (
   grid: GridType,
   start: Coordinate,
-  end: Coordinate
-): Coordinate[] => {
+  end: Coordinate,
+  setGrid: (grid: GridType) => void
+): Promise<Coordinate[]> => {
   const rows = grid.length;
   const cols = grid[0].length;
 
@@ -43,6 +44,10 @@ export const aStar = (
     }
 
     const current = openSet[currentIndex];
+    const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+    localGrid[current.row][current.col].isVisiting = true;
+    setGrid(localGrid);
+    await sleep(100); // sleeps for 1 second
 
     // If we've reached the goal, reconstruct and return the path
     if (current.row === end.row && current.col === end.col) {

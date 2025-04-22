@@ -35,17 +35,21 @@ const Grid = ({ grid, setGrid }: GridProps) => {
               width: 40,
               height: 40,
               backgroundColor: cell.isStart
-                ? "green"
+                ? "#1976d2" // Start: MUI Primary Blue
                 : cell.isEnd
-                ? "red"
+                ? "#d32f2f" // End: MUI Secondary Red
                 : cell.isWall
-                ? "black"
-                : "white",
-              border: "1px solid #ccc",
+                ? "#9e9e9e" // Wall: MUI Grey
+                : cell.isVisiting
+                ? "#ffeb3b" // Visiting: MUI Yellow
+                : cell.isPath
+                ? "#00796b" // Path: MUI Teal
+                : "#e3f2fd", // Empty/Unvisited: MUI Light Blue Grey
+              border: "1px solid #ccc", // Soft border
               cursor: "pointer",
               display: "inline-block",
               "&:hover": {
-                backgroundColor: cell.isWall ? "black" : "#e0e0e0",
+                backgroundColor: cell.isWall ? "#616161" : "#bbdefb", // Lighter on hover
               },
             }}
             onMouseDown={() => handleMouseDown(rowIdx, colIdx)}
