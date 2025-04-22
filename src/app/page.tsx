@@ -12,7 +12,7 @@ import React, { useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
 import AlgorithmSelector from "@/ui/algorithm_selector";
-import Grid from "@/ui/Grid";
+import Grid from "@/ui/grid";
 import ThemeToggle from "@/ui/theme_toggle";
 import { aStar } from "../algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
@@ -103,6 +103,7 @@ const App = () => {
             setGrid={setGrid}
             setStart={setStart}
             setEnd={setEnd}
+            disabled={isRunning}
           />
           {isPathFound && (
             <Typography
