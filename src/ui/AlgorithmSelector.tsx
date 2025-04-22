@@ -1,4 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+"use client";
+
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 
 import React from "react";
 
@@ -11,25 +13,26 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
   algorithm,
   setAlgorithm,
 }) => {
-  const handleAlgorithmChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setAlgorithm(event.target.value as string);
-  };
-
   return (
-    <FormControl fullWidth sx={{ width: 200 }}>
-      <InputLabel id="algorithm-label">Algorithm</InputLabel>
-      <Select
-        labelId="algorithm-label"
-        value={algorithm}
-        label="Algorithm"
-        onChange={handleAlgorithmChange}
-      >
-        <MenuItem value="aStar">A* Algorithm</MenuItem>
-        <MenuItem value="dijkstra">Dijkstra Algorithm</MenuItem>
-      </Select>
-    </FormControl>
+    <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
+      <Typography variant="subtitle1" fontWeight={500}>
+        Algorithm
+      </Typography>
+      <ButtonGroup sx={{ mb: 1 }}>
+        <Button
+          variant={algorithm === "aStar" ? "contained" : "outlined"}
+          onClick={() => setAlgorithm("aStar")}
+        >
+          A*
+        </Button>
+        <Button
+          variant={algorithm === "dijkstra" ? "contained" : "outlined"}
+          onClick={() => setAlgorithm("dijkstra")}
+        >
+          Dijkstra
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 };
 

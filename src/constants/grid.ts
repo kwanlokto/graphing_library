@@ -19,8 +19,7 @@ export const createEmptyGrid = (numRows: number, numCols: number): GridType => {
     }
     grid.push(currentRow);
   }
-  grid[0][0].isStart = true;
-  grid[19][19].isEnd = true;
+
   return grid;
 };
 
