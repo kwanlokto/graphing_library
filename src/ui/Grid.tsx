@@ -6,7 +6,7 @@ interface GridProps {
   numRows: number;
   numCols: number;
 }
-const Grid = ({ numRows = 20, numCols = 20 }: GridProps) => {
+const Grid = ({ numRows, numCols }: GridProps) => {
   const [grid, setGrid] = useState(createEmptyGrid());
   const [isMouseDown, setIsMouseDown] = useState(false);
   function createEmptyGrid() {
@@ -63,7 +63,7 @@ const Grid = ({ numRows = 20, numCols = 20 }: GridProps) => {
             }}
             onMouseDown={() => handleMouseDown(rowIdx, colIdx)}
             onMouseEnter={() => {
-                if (isMouseDown) handleMouseDown(rowIdx, colIdx)
+              if (isMouseDown) handleMouseDown(rowIdx, colIdx);
             }}
             onMouseUp={() => setIsMouseDown(false)}
           />

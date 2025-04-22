@@ -2,9 +2,9 @@
 
 import { Box, Button, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-import { a_star, dijkstra } from "../algorithms/pathfinding";
 
 import Grid from "../ui/Grid";
+import { aStar } from "../algorithms/a_star";
 
 const Home = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -17,7 +17,7 @@ const Home = () => {
     const end = [19, 19]; // End position
 
     // Choose algorithm here (A* or Dijkstra)
-    const foundPath = a_star(grid, start, end);
+    const foundPath = aStar(grid, start, end);
     setPath(foundPath);
     setIsRunning(false);
   };
@@ -40,7 +40,7 @@ const Home = () => {
       >
         {isRunning ? <CircularProgress size={24} /> : "Start Pathfinding"}
       </Button>
-      <Grid />
+      <Grid numRows={20} numCols={20}/>
       {path.length > 0 && <Box sx={{ marginTop: 2 }}>Path Found!</Box>}
     </Box>
   );
