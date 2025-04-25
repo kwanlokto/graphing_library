@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Coordinate, createEmptyGrid } from "@/constants/grid";
+import { Coordinate, GridType } from "@/types/grid";
 import React, { useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
@@ -17,6 +17,19 @@ import { IoMdPlayCircle } from "react-icons/io";
 import ThemeToggle from "@/ui/theme_toggle";
 import { aStar } from "../algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
+
+const createEmptyGrid = (numRows: number, numCols: number): GridType => {
+  const grid = [];
+  for (let row = 0; row < numRows; row++) {
+    const currentRow = [];
+    for (let col = 0; col < numCols; col++) {
+      currentRow.push({ isStart: false, isEnd: false, isWall: false });
+    }
+    grid.push(currentRow);
+  }
+
+  return grid;
+};
 
 const App = () => {
   const [isRunning, setIsRunning] = useState(false);

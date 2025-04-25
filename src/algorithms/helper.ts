@@ -1,4 +1,4 @@
-import { Coordinate, GridType } from "@/constants/grid";
+import { Coordinate, GridType } from "@/types/grid";
 
 /**
  * Retrieves all walkable neighboring cells (non-wall) from the given coordinate.
@@ -39,4 +39,14 @@ export const getNeighbors = (
   }
 
   return neighbors;
+};
+
+/**
+ * Delays execution for a specified number of milliseconds.
+ *
+ * @param {number} ms - The number of milliseconds to wait.
+ * @returns {Promise<void>} A promise that resolves after the specified delay.
+ */
+export const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };

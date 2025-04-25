@@ -1,4 +1,4 @@
-import { Coordinate, GridType } from "@/constants/grid";
+import { Coordinate, GridType } from "@/types/grid";
 
 import { aStar } from "./a_star"; // adjust the path if needed
 

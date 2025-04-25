@@ -1,7 +1,7 @@
-import { Coordinate, GridType, sleep } from "@/constants/grid";
+import { Coordinate, GridType } from "@/types/grid";
+import { getNeighbors, sleep } from "./helper";
 
 import { MinHeap } from "@/datastructures/min_heap";
-import { getNeighbors } from "./helper";
 
 const createPopulatedGrid = (numRows: number, numCols: number, value: any) => {
   return Array.from({ length: numRows }, () => Array(numCols).fill(value));

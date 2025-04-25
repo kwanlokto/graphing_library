@@ -1,6 +1,5 @@
-import { Coordinate, GridType, sleep } from "@/constants/grid";
-
-import { getNeighbors } from "./helper";
+import { Coordinate, GridType } from "@/types/grid";
+import { getNeighbors, sleep } from "./helper";
 
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.

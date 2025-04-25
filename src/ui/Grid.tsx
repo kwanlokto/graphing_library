@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup } from "@mui/material";
-import { CellType, Coordinate, GridType } from "@/constants/grid";
+import { CellType, Coordinate, GridType } from "@/types/grid";
 import React, { useState } from "react";
 
 interface GridProps {
