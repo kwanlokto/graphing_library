@@ -13,6 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 
 import AlgorithmSelector from "@/ui/algorithm_selector";
 import Grid from "@/ui/grid";
+import { IoMdPlayCircle } from "react-icons/io";
 import ThemeToggle from "@/ui/theme_toggle";
 import { aStar } from "../algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
@@ -78,47 +79,88 @@ const App = () => {
           minHeight: "100vh",
         }}
       >
-        <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={startPathfinding}
-            disabled={isRunning}
-            sx={{
-              width: 200,
-              borderRadius: 2,
-              padding: "10px 20px",
-              boxShadow: 2,
-              "&:hover": { boxShadow: 4 },
-            }}
+        <Stack
+          spacing={3}
+          alignItems="center"
+          sx={{
+            maxWidth: "1280px",
+            width: "100%",
+            margin: "0 auto",
+            px: 18,
+            py: 4,
+            backgroundColor: (theme) => theme.palette.background.default,
+          }}
+        >
+          {/* Top Row: Algorithm Selector and Theme Toggle */}
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="space-between"
+            sx={{ width: "100%" }}
           >
-            {isRunning ? <CircularProgress size={24} /> : "Start Pathfinding"}
-          </Button>
-          <AlgorithmSelector
-            algorithm={algorithm}
-            setAlgorithm={setAlgorithm}
-          />
-          <Grid
-            grid={grid}
-            setGrid={setGrid}
-            setStart={setStart}
-            setEnd={setEnd}
-            disabled={isRunning}
-          />
-          {isPathFound && (
-            <Typography
-              variant="h6"
+            <AlgorithmSelector
+              algorithm={algorithm}
+              setAlgorithm={setAlgorithm}
+            />
+            <ThemeToggle
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+            />
+          </Stack>
+
+          {/* Full-width Grid */}
+          <Box sx={{ width: "100%" }}>
+            <Grid
+              grid={grid}
+              setGrid={setGrid}
+              setStart={setStart}
+              setEnd={setEnd}
+              disabled={isRunning}
+            />
+          </Box>
+          {/* Bottom Row: Start Button and Path Status */}
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={startPathfinding}
+              disabled={isRunning}
+              startIcon={!isRunning ? <IoMdPlayCircle /> : null}
               sx={{
-                marginTop: 2,
-                color: "green",
-                fontWeight: 500,
-                textAlign: "center",
+                minWidth: 200,
+                borderRadius: 3,
+                paddingY: 1.5,
+                fontSize: "1rem",
+                fontWeight: 600,
+                textTransform: "none",
+                boxShadow: 3,
+                "&:hover": {
+                  boxShadow: 6,
+                  transform: "translateY(-1px)",
+                },
+                transition: "all 0.2s ease-in-out",
               }}
             >
-              Path Found!
-            </Typography>
-          )}
-          <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+              {isRunning ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Start Pathfinding"
+              )}
+            </Button>
+
+            {isPathFound && (
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: "success.main",
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                }}
+              >
+                ✅ Path Found!
+              </Typography>
+            )}
+          </Stack>
         </Stack>
       </Box>
     </ThemeProvider>

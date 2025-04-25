@@ -61,33 +61,50 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 4,
-        gap: 3,
+        flexDirection: "row", // vertical on small, horizontal on medium+
+        justifyContent: "space-between",
+        gap: 4,
       }}
     >
-      <ButtonGroup sx={{ mb: 2 }}>
-        <Button
-          variant={editMode === "start" ? "contained" : "outlined"}
-          onClick={() => setEditMode("start")}
+      {/* Button Group */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: { xs: "center", md: "flex-start" },
+          mb: { xs: 2, md: 0 },
+        }}
+      >
+        <ButtonGroup
+          orientation={
+            typeof window !== "undefined" && window.innerWidth < 900
+              ? "horizontal"
+              : "vertical"
+          }
+          variant="outlined"
         >
-          Set Start
-        </Button>
-        <Button
-          variant={editMode === "end" ? "contained" : "outlined"}
-          onClick={() => setEditMode("end")}
-        >
-          Set End
-        </Button>
-        <Button
-          variant={editMode === "wall" ? "contained" : "outlined"}
-          onClick={() => setEditMode("wall")}
-        >
-          Draw Walls
-        </Button>
-      </ButtonGroup>
+          <Button
+            variant={editMode === "start" ? "contained" : "outlined"}
+            onClick={() => setEditMode("start")}
+          >
+            Start
+          </Button>
+          <Button
+            variant={editMode === "end" ? "contained" : "outlined"}
+            onClick={() => setEditMode("end")}
+          >
+            End
+          </Button>
+          <Button
+            variant={editMode === "wall" ? "contained" : "outlined"}
+            onClick={() => setEditMode("wall")}
+          >
+            Walls
+          </Button>
+        </ButtonGroup>
+      </Box>
+
+      {/* Grid */}
       <Box
         sx={{
           display: "grid",
