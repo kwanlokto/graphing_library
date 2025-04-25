@@ -105,6 +105,7 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
           </Button>
         </ButtonGroup>
         <Button
+          fullWidth
           variant="contained"
           color="secondary"
           disabled={disabled}

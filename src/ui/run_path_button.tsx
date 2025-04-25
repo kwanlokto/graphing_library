@@ -13,6 +13,20 @@ interface RunButtonProps {
   setDisableGrid: Dispatch<SetStateAction<boolean>>;
 }
 
+const buttonStyle = {
+  minWidth: 175,
+  minHeight: 40,
+  fontSize: "1rem",
+  fontWeight: 600,
+  textTransform: "none",
+  boxShadow: 3,
+  "&:hover": {
+    boxShadow: 6,
+    transform: "translateY(-1px)",
+  },
+  transition: "all 0.2s ease-in-out",
+};
+
 export const RunButton = ({
   gridState,
   resetGrid,
@@ -49,7 +63,18 @@ export const RunButton = ({
   };
 
   return (
-    <Stack direction="row" spacing={2} alignItems="center">
+    <Stack direction="column" spacing={1} alignItems="end">
+      <Typography
+        variant="subtitle1"
+        sx={{
+          color: "text.primary",
+          letterSpacing: 0.5,
+          minHeight: "1.5rem", // adjust as needed to match font size
+        }}
+      >
+        {pathStatus !== null ? pathStatus : ""}
+      </Typography>
+
       {pathStatus === null ? (
         <Button
           variant="contained"
@@ -57,20 +82,7 @@ export const RunButton = ({
           onClick={startPathfinding}
           disabled={isRunning}
           startIcon={!isRunning ? <IoMdPlayCircle /> : null}
-          sx={{
-            minWidth: 200,
-            borderRadius: 3,
-            paddingY: 1.5,
-            fontSize: "1rem",
-            fontWeight: 600,
-            textTransform: "none",
-            boxShadow: 3,
-            "&:hover": {
-              boxShadow: 6,
-              transform: "translateY(-1px)",
-            },
-            transition: "all 0.2s ease-in-out",
-          }}
+          sx={buttonStyle}
         >
           {isRunning ? (
             <CircularProgress size={24} color="inherit" />
@@ -87,36 +99,10 @@ export const RunButton = ({
             setPathStatus(null);
           }}
           startIcon={<IoMdRefresh />} // Add a refresh icon
-          sx={{
-            minWidth: 200,
-            borderRadius: 3,
-            paddingY: 1.5,
-            fontSize: "1rem",
-            fontWeight: 600,
-            textTransform: "none",
-            boxShadow: 3,
-            "&:hover": {
-              boxShadow: 6,
-              transform: "translateY(-1px)",
-            },
-            transition: "all 0.2s ease-in-out",
-          }}
+          sx={buttonStyle}
         >
           Reload
         </Button>
-      )}
-
-      {pathStatus !== null && (
-        <Typography
-          variant="subtitle1"
-          sx={{
-            color: "success.main",
-            fontWeight: 600,
-            letterSpacing: 0.5,
-          }}
-        >
-          {pathStatus}
-        </Typography>
       )}
     </Stack>
   );

@@ -90,6 +90,14 @@ const App = () => {
             backgroundColor: (theme) => theme.palette.background.default,
           }}
         >
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+          >
+            <ThemeToggle
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+            />
+          </Box>
           {/* Top Row: Algorithm Selector and Theme Toggle */}
           <Stack
             direction="row"
@@ -101,9 +109,12 @@ const App = () => {
               algorithm={algorithm}
               setAlgorithm={setAlgorithm}
             />
-            <ThemeToggle
-              isDarkMode={isDarkMode}
-              setIsDarkMode={setIsDarkMode}
+
+            <RunButton
+              gridState={[grid, setGrid]}
+              resetGrid={initGrid}
+              algorithm={algorithm}
+              setDisableGrid={setDisableGrid}
             />
           </Stack>
 
@@ -111,13 +122,6 @@ const App = () => {
           <Box sx={{ width: "100%" }}>
             <Grid grid={grid} setGrid={setGrid} disabled={disableGrid} />
           </Box>
-
-          <RunButton
-            gridState={[grid, setGrid]}
-            resetGrid={initGrid}
-            algorithm={algorithm}
-            setDisableGrid={setDisableGrid}
-          />
         </Stack>
       </Box>
     </ThemeProvider>

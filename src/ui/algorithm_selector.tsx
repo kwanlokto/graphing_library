@@ -18,7 +18,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
       <Typography variant="subtitle1" fontWeight="bold" color="text.primary">
         Algorithm
       </Typography>
-      <ButtonGroup sx={{ mb: 1 }}>
+      <ButtonGroup sx={{ mb: 1, minHeight: 40 }}>
         <Button
           variant={algorithm === "aStar" ? "contained" : "outlined"}
           onClick={() => setAlgorithm("aStar")}
