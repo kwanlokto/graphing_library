@@ -15,7 +15,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
 }) => {
   return (
     <Box display="flex" flexDirection="column" gap={1}>
-      <Typography variant="subtitle1" fontWeight="bold">
+      <Typography variant="subtitle1" fontWeight="bold" color="text.primary">
         Algorithm
       </Typography>
       <ButtonGroup sx={{ mb: 1 }}>

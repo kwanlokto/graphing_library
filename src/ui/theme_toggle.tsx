@@ -22,6 +22,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
         />
       }
       label="Dark Mode"
+      sx={{ color: "text.primary" }}
     />
   );
 };
