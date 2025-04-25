@@ -2,6 +2,8 @@ import { Box, Button, ButtonGroup } from "@mui/material";
 import { CellType, Coordinate, GridType } from "@/types/grid";
 import React, { useState } from "react";
 
+import { randomlyPlaceWalls } from "@/algorithms/helper";
+
 interface GridProps {
   grid: GridType;
   setGrid: (grid: GridType) => void;
@@ -63,7 +65,7 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
         display: "flex",
         flexDirection: "row", // vertical on small, horizontal on medium+
         justifyContent: "space-between",
-        gap: 4,
+        gap: 8,
       }}
     >
       {/* Button Group */}
@@ -73,15 +75,19 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
           flexDirection: "column",
           alignItems: { xs: "center", md: "flex-start" },
           mb: { xs: 2, md: 0 },
+          width: "100%",
+          gap: 8,
         }}
       >
         <ButtonGroup
+          fullWidth
           orientation={
             typeof window !== "undefined" && window.innerWidth < 900
               ? "horizontal"
               : "vertical"
           }
           variant="outlined"
+          disabled={disabled}
         >
           <Button
             variant={editMode === "start" ? "contained" : "outlined"}
@@ -102,6 +108,17 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
             Walls
           </Button>
         </ButtonGroup>
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={disabled}
+          onClick={() => {
+            const updatedGrid = randomlyPlaceWalls(grid, 20); // 20% density for walls
+            setGrid(updatedGrid);
+          }}
+        >
+          20% Walls
+        </Button>
       </Box>
 
       {/* Grid */}

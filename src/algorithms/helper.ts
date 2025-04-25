@@ -104,3 +104,43 @@ export const updateGridWithStartEnd = (
   newGrid[end.row][end.col].isEnd = true; // mark end position
   return newGrid;
 };
+
+/**
+ * Randomly places walls on the grid.
+ * The function will randomly mark cells as walls, ensuring that the start and end positions are not turned into walls.
+ *
+ * @param {GridType} grid - The grid to place walls on.
+ * @param {Coordinate} start - The start position that should not be turned into a wall.
+ * @param {Coordinate} end - The end position that should not be turned into a wall.
+ * @param {number} wallDensity - The percentage (0-100) of the grid that should be filled with walls.
+ * @returns {GridType} The updated grid with randomly placed walls.
+ */
+export const randomlyPlaceWalls = (
+  grid: GridType,
+  wallDensity: number
+): GridType => {
+  const newGrid = [...grid];
+  const totalCells = grid.length * grid[0].length;
+  const wallCount = Math.floor((wallDensity / 100) * totalCells);
+
+  let wallsPlaced = 0;
+
+  while (wallsPlaced < wallCount) {
+    const row = Math.floor(Math.random() * grid.length);
+    const col = Math.floor(Math.random() * grid[0].length);
+
+    // Avoid placing walls on the start and end positions
+    if (
+      newGrid[row][col].isStart ||
+      newGrid[row][col].isEnd ||
+      newGrid[row][col].isWall
+    ) {
+      continue; // Skip if it's the start, end, or already a wall
+    }
+
+    newGrid[row][col].isWall = true;
+    wallsPlaced++;
+  }
+
+  return newGrid;
+};
