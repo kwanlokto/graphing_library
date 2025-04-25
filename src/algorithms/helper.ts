@@ -50,3 +50,57 @@ export const getNeighbors = (
 export const sleep = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+/**
+ * Creates an empty grid with the specified number of rows and columns.
+ * Each cell in the grid is initialized with `isStart`, `isEnd`, and `isWall` set to `false`.
+ *
+ * @param {number} numRows - The number of rows in the grid.
+ * @param {number} numCols - The number of columns in the grid.
+ * @returns {GridType} A 2D array representing the grid, where each cell is an object
+ * with properties `isStart`, `isEnd`, and `isWall` set to `false`.
+ */
+export const createEmptyGrid = (numRows: number, numCols: number): GridType => {
+  const grid = [];
+  for (let row = 0; row < numRows; row++) {
+    const currentRow = [];
+    for (let col = 0; col < numCols; col++) {
+      currentRow.push({ isStart: false, isEnd: false, isWall: false });
+    }
+    grid.push(currentRow);
+  }
+
+  return grid;
+};
+
+/**
+ * Generates a random coordinate within the given grid dimensions.
+ *
+ * @param {number} rows - The number of rows in the grid.
+ * @param {number} cols - The number of columns in the grid.
+ * @returns {Coordinate} A coordinate object containing a randomly generated row and column.
+ */
+export const getRandomCoordinate = (rows: number, cols: number): Coordinate => {
+  const row = Math.floor(Math.random() * rows);
+  const col = Math.floor(Math.random() * cols);
+  return { row, col };
+};
+
+/**
+ * Updates the grid with the start and end positions.
+ *
+ * @param {GridType} grid - The current grid to be updated.
+ * @param {Coordinate} start - The coordinate representing the start position.
+ * @param {Coordinate} end - The coordinate representing the end position.
+ * @returns {any[]} A new grid with the start and end positions marked.
+ */
+export const updateGridWithStartEnd = (
+  grid: GridType,
+  start: Coordinate,
+  end: Coordinate
+) => {
+  const newGrid = [...grid];
+  newGrid[start.row][start.col].isStart = true; // mark start position
+  newGrid[end.row][end.col].isEnd = true; // mark end position
+  return newGrid;
+};

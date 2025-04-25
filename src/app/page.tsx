@@ -8,33 +8,25 @@ import {
   Typography,
 } from "@mui/material";
 import { Coordinate, GridType } from "@/types/grid";
-import React, { useMemo, useState } from "react";
+import { IoMdPlayCircle, IoMdRefresh } from "react-icons/io";
+import React, { useEffect, useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
+import {
+  createEmptyGrid,
+  getRandomCoordinate,
+  updateGridWithStartEnd,
+} from "@/algorithms/helper";
 
 import AlgorithmSelector from "@/ui/algorithm_selector";
 import Grid from "@/ui/grid";
-import { IoMdPlayCircle } from "react-icons/io";
 import ThemeToggle from "@/ui/theme_toggle";
 import { aStar } from "../algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
 
-const createEmptyGrid = (numRows: number, numCols: number): GridType => {
-  const grid = [];
-  for (let row = 0; row < numRows; row++) {
-    const currentRow = [];
-    for (let col = 0; col < numCols; col++) {
-      currentRow.push({ isStart: false, isEnd: false, isWall: false });
-    }
-    grid.push(currentRow);
-  }
-
-  return grid;
-};
-
 const App = () => {
   const [isRunning, setIsRunning] = useState(false);
-  const [grid, setGrid] = useState(createEmptyGrid(20, 20));
-  const [isPathFound, setIsPathFound] = useState(false);
+  const [grid, setGrid] = useState<GridType>([]);
+  const [pathStatus, setPathStatus] = useState<string | null>(null);
   const [start, setStart] = useState<Coordinate | null>(null);
   const [end, setEnd] = useState<Coordinate | null>(null);
   const [algorithm, setAlgorithm] = useState("aStar");
@@ -53,6 +45,34 @@ const App = () => {
     [isDarkMode]
   );
 
+  const initGrid = () => {
+    setPathStatus(null);
+    const localGrid = createEmptyGrid(20, 20);
+    // Randomly generate start and end, ensuring they don't overlap
+    const randomStart = getRandomCoordinate(20, 20);
+    let randomEnd = getRandomCoordinate(20, 20);
+
+    // Ensure start and end are not the same
+    while (
+      randomStart.row === randomEnd.row &&
+      randomStart.col === randomEnd.col
+    ) {
+      randomEnd = getRandomCoordinate(20, 20);
+    }
+
+    // Update the start and end positions
+    setStart(randomStart);
+    setEnd(randomEnd);
+
+    // Update the grid to reflect the new start and end positions
+    const updatedGrid = updateGridWithStartEnd(
+      localGrid,
+      randomStart,
+      randomEnd
+    );
+    setGrid(updatedGrid);
+  };
+
   const startPathfinding = async () => {
     if (!start || !end) {
       alert("Please select both start and end points.");
@@ -70,14 +90,23 @@ const App = () => {
     }
 
     if (foundPath.length > 0) {
-      setIsPathFound(true);
+      setPathStatus("Path Found!");
       foundPath.forEach((coordinate: Coordinate) => {
         localGrid[coordinate.row][coordinate.col].isPath = true;
       });
+    } else {
+      setPathStatus("Path Not Found!");
     }
     setGrid(localGrid);
     setIsRunning(false);
   };
+
+  /**
+   * On initial render initialize the grid
+   */
+  useEffect(() => {
+    initGrid();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -128,40 +157,65 @@ const App = () => {
               setGrid={setGrid}
               setStart={setStart}
               setEnd={setEnd}
-              disabled={isRunning}
+              disabled={isRunning || pathStatus !== null}
             />
           </Box>
           {/* Bottom Row: Start Button and Path Status */}
           <Stack direction="row" spacing={2} alignItems="center">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={startPathfinding}
-              disabled={isRunning}
-              startIcon={!isRunning ? <IoMdPlayCircle /> : null}
-              sx={{
-                minWidth: 200,
-                borderRadius: 3,
-                paddingY: 1.5,
-                fontSize: "1rem",
-                fontWeight: 600,
-                textTransform: "none",
-                boxShadow: 3,
-                "&:hover": {
-                  boxShadow: 6,
-                  transform: "translateY(-1px)",
-                },
-                transition: "all 0.2s ease-in-out",
-              }}
-            >
-              {isRunning ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Start Pathfinding"
-              )}
-            </Button>
+            {pathStatus === null ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={startPathfinding}
+                disabled={isRunning}
+                startIcon={!isRunning ? <IoMdPlayCircle /> : null}
+                sx={{
+                  minWidth: 200,
+                  borderRadius: 3,
+                  paddingY: 1.5,
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  boxShadow: 3,
+                  "&:hover": {
+                    boxShadow: 6,
+                    transform: "translateY(-1px)",
+                  },
+                  transition: "all 0.2s ease-in-out",
+                }}
+              >
+                {isRunning ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Start Pathfinding"
+                )}
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={initGrid}
+                startIcon={<IoMdRefresh />} // Add a refresh icon
+                sx={{
+                  minWidth: 200,
+                  borderRadius: 3,
+                  paddingY: 1.5,
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  boxShadow: 3,
+                  "&:hover": {
+                    boxShadow: 6,
+                    transform: "translateY(-1px)",
+                  },
+                  transition: "all 0.2s ease-in-out",
+                }}
+              >
+                Reload
+              </Button>
+            )}
 
-            {isPathFound && (
+            {pathStatus !== null && (
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -170,7 +224,7 @@ const App = () => {
                   letterSpacing: 0.5,
                 }}
               >
-                ✅ Path Found!
+                {pathStatus}
               </Typography>
             )}
           </Stack>
