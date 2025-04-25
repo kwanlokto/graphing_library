@@ -1,5 +1,5 @@
 import { Coordinate, GridType } from "@/types/grid";
-import { getNeighbors, sleep } from "./helper";
+import { getCoordinate, getNeighbors, sleep } from "./helper";
 
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.
@@ -12,10 +12,13 @@ import { getNeighbors, sleep } from "./helper";
  */
 export const aStar = async (
   grid: GridType,
-  start: Coordinate,
-  end: Coordinate,
+
   setGrid: (grid: GridType) => void
 ): Promise<Coordinate[]> => {
+  const start = getCoordinate(grid, "isStart");
+  const end = getCoordinate(grid, "isEnd");
+  if (start === null || end === null) throw Error("Failed to find start or end");
+
   const rows = grid.length;
   const cols = grid[0].length;
 

@@ -7,8 +7,6 @@ import { randomlyPlaceWalls } from "@/algorithms/helper";
 interface GridProps {
   grid: GridType;
   setGrid: (grid: GridType) => void;
-  setStart: (end: Coordinate) => void;
-  setEnd: (end: Coordinate) => void;
   disabled: boolean;
 }
 
@@ -26,7 +24,7 @@ const getCellBgColor = (cell: CellType) => {
     : "#e3f2fd";
 };
 
-const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
+const Grid = ({ grid, setGrid, disabled }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [editMode, setEditMode] = useState<"start" | "end" | "wall">("wall");
 
@@ -42,7 +40,6 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
         }
       }
       cell.isStart = true;
-      setStart({ row, col });
     } else if (editMode === "end") {
       for (let r = 0; r < newGrid.length; r++) {
         for (let c = 0; c < newGrid[r].length; c++) {
@@ -50,7 +47,6 @@ const Grid = ({ grid, setGrid, setStart, setEnd, disabled }: GridProps) => {
         }
       }
       cell.isEnd = true;
-      setEnd({ row, col });
     } else if (editMode === "wall" && !cell.isStart && !cell.isEnd) {
       cell.isWall = !cell.isWall;
     }

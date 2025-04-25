@@ -1,6 +1,25 @@
 import { Coordinate, GridType } from "@/types/grid";
 
 /**
+ * Finds the start coordinate in the grid.
+ * @param grid - The 2D grid array containing cells with `isStart` property.
+ * @returns The coordinate of the start cell, or null if not found.
+ */
+export const getCoordinate = (
+  grid: GridType,
+  value: "isStart" | "isEnd" | "isWall"
+): Coordinate | null => {
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[row].length; col++) {
+      if (grid[row][col][value]) {
+        return { row, col };
+      }
+    }
+  }
+  return null;
+};
+
+/**
  * Retrieves all walkable neighboring cells (non-wall) from the given coordinate.
  * Only considers up, down, left, and right (no diagonals).
  *
