@@ -1,6 +1,33 @@
 import { Coordinate, GridType } from "@/types/grid";
 import { getCoordinate, getNeighbors, sleep } from "./helper";
 
+export const pseudocode = `
+// A* Pathfinding Pseudocode
+
+function AStar(start, goal):
+    openSet := {start}
+    cameFrom := empty map
+    gScore[start] := 0
+    fScore[start] := heuristic(start, goal)
+
+    while openSet is not empty:
+        current := node in openSet with lowest fScore[]
+        if current = goal:
+            return reconstruct_path(cameFrom, current)
+
+        remove current from openSet
+        for each neighbor of current:
+            tentative_gScore := gScore[current] + dist(current, neighbor)
+            if tentative_gScore < gScore[neighbor]:
+                cameFrom[neighbor] := current
+                gScore[neighbor] := tentative_gScore
+                fScore[neighbor] := gScore[neighbor] + heuristic(neighbor, goal)
+                if neighbor not in openSet:
+                    add neighbor to openSet
+
+    return failure
+`;
+
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.
  *
@@ -17,7 +44,8 @@ export const aStar = async (
 ): Promise<Coordinate[]> => {
   const start = getCoordinate(grid, "isStart");
   const end = getCoordinate(grid, "isEnd");
-  if (start === null || end === null) throw Error("Failed to find start or end");
+  if (start === null || end === null)
+    throw Error("Failed to find start or end");
 
   const rows = grid.length;
   const cols = grid[0].length;
