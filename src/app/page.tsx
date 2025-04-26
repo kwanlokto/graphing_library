@@ -13,7 +13,6 @@ import AlgorithmSelector from "@/ui/algorithm_selector";
 import Grid from "@/ui/grid";
 import { GridType } from "@/types/grid";
 import { RunButton } from "@/ui/run_path_button";
-import ThemeToggle from "@/ui/theme_toggle";
 
 const App = () => {
   const [grid, setGrid] = useState<GridType>([]);
@@ -66,65 +65,29 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 3,
-          padding: 2,
-          backgroundColor: theme.palette.background.default,
-          minHeight: "100vh",
-        }}
+    <>
+      {/* Top Row: Algorithm Selector and Theme Toggle */}
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="space-between"
+        sx={{ width: "100%" }}
       >
-        <Stack
-          spacing={3}
-          alignItems="center"
-          sx={{
-            maxWidth: "1280px",
-            width: "100%",
-            margin: "0 auto",
-            px: 18,
-            py: 4,
-            backgroundColor: (theme) => theme.palette.background.default,
-          }}
-        >
-          <Box
-            sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-          >
-            <ThemeToggle
-              isDarkMode={isDarkMode}
-              setIsDarkMode={setIsDarkMode}
-            />
-          </Box>
-          {/* Top Row: Algorithm Selector and Theme Toggle */}
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="space-between"
-            sx={{ width: "100%" }}
-          >
-            <AlgorithmSelector
-              algorithm={algorithm}
-              setAlgorithm={setAlgorithm}
-            />
+        <AlgorithmSelector algorithm={algorithm} setAlgorithm={setAlgorithm} />
 
-            <RunButton
-              gridState={[grid, setGrid]}
-              resetGrid={initGrid}
-              algorithm={algorithm}
-              setDisableGrid={setDisableGrid}
-            />
-          </Stack>
+        <RunButton
+          gridState={[grid, setGrid]}
+          resetGrid={initGrid}
+          algorithm={algorithm}
+          setDisableGrid={setDisableGrid}
+        />
+      </Stack>
 
-          {/* Full-width Grid */}
-          <Box sx={{ width: "100%" }}>
-            <Grid grid={grid} setGrid={setGrid} disabled={disableGrid} />
-          </Box>
-        </Stack>
+      {/* Full-width Grid */}
+      <Box sx={{ width: "100%" }}>
+        <Grid grid={grid} setGrid={setGrid} disabled={disableGrid} />
       </Box>
-    </ThemeProvider>
+    </>
   );
 };
 
