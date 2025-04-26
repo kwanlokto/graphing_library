@@ -69,7 +69,7 @@ export const RunButton = ({
         sx={{
           color: "text.primary",
           letterSpacing: 0.5,
-          minHeight: "1.5rem", // adjust as needed to match font size
+          minHeight: "1.75rem", // adjust as needed to match font size
         }}
       >
         {pathStatus !== null ? pathStatus : ""}

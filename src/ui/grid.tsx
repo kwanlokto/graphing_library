@@ -114,7 +114,7 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
             setGrid(updatedGrid);
           }}
         >
-          20% Walls
+          +20% Walls
         </Button>
       </Box>
 
