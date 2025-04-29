@@ -1,21 +1,18 @@
-// app/wiki/search-algorithms/page.tsx
-
 "use client";
 
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from "@mui/material";
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+} from "react-icons/md";
+import { Suspense, lazy, useState } from "react";
 
 import Link from "next/link";
 import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
 import { pseudocode as aStarPseudocode } from "@/algorithms/a_star";
-import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { pseudocode as dijkstraPseudocode } from "@/algorithms/dijkstra";
+
+const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card")); // lazy-loaded component
 
 const searchAlgorithms = [
   // {
@@ -50,7 +47,7 @@ const searchAlgorithms = [
         many scenarios
       </>
     ),
-    psudocode: aStarPseudocode,
+    pseudocode: aStarPseudocode,
   },
   {
     name: "Dijkstra",
@@ -62,54 +59,68 @@ const searchAlgorithms = [
         weighted graph (a graph where edges have numerical weights or costs).
       </>
     ),
-    psudocode: aStarPseudocode,
+    pseudocode: dijkstraPseudocode,
   },
 ];
 
 export default function SearchAlgorithmsPage() {
+  const [index, setIndex] = useState(0);
+  const [query, setQuery] = useState("");
+
+  const filteredAlgorithms = searchAlgorithms.filter((algo) =>
+    algo.name.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const currentAlgo = filteredAlgorithms[index];
+
+  const handleNext = () => {
+    if (index < filteredAlgorithms.length - 1) setIndex(index + 1);
+  };
+
+  const handlePrev = () => {
+    if (index > 0) setIndex(index - 1);
+  };
+
   return (
-    <Box sx={{ px: 2, py: 6, mx: "auto" }}>
+    <Box sx={{ px: 2, py: 6, mx: "auto", maxWidth: 800 }}>
       <Typography variant="h3" component="h1" align="center" gutterBottom>
         Search Algorithms
       </Typography>
 
-      <Grid container spacing={4}>
-        {searchAlgorithms.map((algo) => (
-          <Grid size={12} key={algo.key}>
-            <Card
-              variant="outlined"
-              sx={{
-                transition: "0.3s",
-                "&:hover": { boxShadow: 3 },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h5" component="div" gutterBottom>
-                  {algo.name}
-                </Typography>
-                <Typography color="text.secondary">
-                  {algo.description}
-                </Typography>
-                {algo.psudocode && (
-                  <SyntaxHighlighter language="text" style={tomorrow}>
-                    {algo.psudocode}
-                  </SyntaxHighlighter>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Search algorithms..."
+        variant="outlined"
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setIndex(0); // reset index on new search
+        }}
+      />
+
+      <Suspense fallback={<Typography>Loading...</Typography>}>
+        {currentAlgo ? (
+          <AlgorithmWikiCard {...currentAlgo} />
+        ) : (
+          <Typography>No algorithms found.</Typography>
+        )}
+      </Suspense>
+
+      <Box mt={2} display="flex" justifyContent="space-between">
+        <IconButton onClick={handlePrev} disabled={index === 0}>
+          <MdOutlineKeyboardArrowLeft />
+        </IconButton>
+        <IconButton
+          onClick={handleNext}
+          disabled={index >= filteredAlgorithms.length - 1}
+        >
+          <MdOutlineKeyboardArrowRight />
+        </IconButton>
+      </Box>
 
       <Box mt={8} textAlign="center">
-        <Button
-          component={Link}
-          href="/"
-          variant="text"
-          color="primary"
-          size="small"
-        >
+        <Button component={Link} href="/" variant="text" color="primary">
           ← Back to Home
         </Button>
       </Box>
