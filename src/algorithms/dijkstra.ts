@@ -29,7 +29,7 @@ function Dijkstra(Graph, source):
  * Dijkstra's algorithm on a 2D grid.
  *
  * @param grid - A 2D array representing the grid; each cell holds data about walls, etc.
-
+ * @param setGrid - Setter function to update the grid.
  * @returns An array of Coordinates representing the shortest path from start to end,
  *          or an empty array if no path is found.
  */

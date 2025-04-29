@@ -32,14 +32,12 @@ function AStar(start, goal):
  * Performs the A* pathfinding algorithm on a 2D grid.
  *
  * @param grid - A 2D array representing the grid; each cell holds data about walls, etc.
- * @param start - The starting coordinate (row and col).
- * @param end - The destination coordinate (row and col).
+ * @param setGrid - Setter function to update the grid.
  * @returns An array of Coordinates representing the shortest path from start to end,
  *          or an empty array if no path is found.
  */
 export const aStar = async (
   grid: GridType,
-
   setGrid: (grid: GridType) => void
 ): Promise<Coordinate[]> => {
   const start = getCoordinate(grid, "isStart");
