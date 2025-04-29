@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -84,19 +91,34 @@ export default function SearchAlgorithmsPage() {
   return (
     <Box sx={{ px: 2, py: 6, mx: "auto", maxWidth: 800 }}>
       <Typography variant="h3" component="h1" align="center" gutterBottom>
-        Search Algorithms
+        Algorithms
       </Typography>
 
-      <TextField
+      <Autocomplete
         fullWidth
-        margin="normal"
-        label="Search algorithms..."
-        variant="outlined"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setIndex(0); // reset index on new search
+        options={searchAlgorithms}
+        getOptionLabel={(option) => option.name}
+        value={currentAlgo || null}
+        onChange={(event, newValue) => {
+          const newIndex = filteredAlgorithms.findIndex(
+            (algo) => algo.key === newValue?.key
+          );
+          setQuery(newValue?.name || "");
+          setIndex(newIndex !== -1 ? newIndex : 0);
         }}
+        inputValue={query}
+        onInputChange={(event, newInputValue) => {
+          setQuery(newInputValue);
+          setIndex(0);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Search..."
+            variant="outlined"
+            margin="normal"
+          />
+        )}
       />
 
       <Suspense fallback={<Typography>Loading...</Typography>}>
