@@ -41,8 +41,27 @@ const searchAlgorithms = [
   {
     name: "A* Search",
     key: "a-star",
-    description:
-      "Finds the shortest path using heuristics to guide the search efficiently.",
+    description: (
+      <>
+        A (A-Star) Search* is a widely used pathfinding and graph traversal
+        algorithm that finds the shortest path between a start node and a goal
+        node in a weighted graph. It improves on Dijkstra’s algorithm by using
+        heuristics to guide the search, making it faster and more efficient in
+        many scenarios
+      </>
+    ),
+    psudocode: aStarPseudocode,
+  },
+  {
+    name: "Dijkstra",
+    key: "dijkstra",
+    description: (
+      <>
+        Dijkstra's Algorithm is a classic algorithm used in graph theory to find
+        the shortest path from a starting node (source) to all other nodes in a
+        weighted graph (a graph where edges have numerical weights or costs).
+      </>
+    ),
     psudocode: aStarPseudocode,
   },
 ];

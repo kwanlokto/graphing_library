@@ -7,6 +7,28 @@ const createPopulatedGrid = (numRows: number, numCols: number, value: any) => {
   return Array.from({ length: numRows }, () => Array(numCols).fill(value));
 };
 
+export const pseudocode = `
+// Dijkstra Pathfinding Pseudocode
+
+function Dijkstra(Graph, source):
+    create distance map: distance[node] = ∞ for each node in Graph
+    distance[source] = 0
+
+    create a priority queue Q
+    Q.insert(source, 0)
+
+    while Q is not empty:
+        current = Q.extract_min()  // Node with the smallest distance
+
+        for each neighbor of current:
+            alt = distance[current] + weight(current, neighbor)
+            if alt < distance[neighbor]:
+                distance[neighbor] = alt
+                Q.insert_or_update(neighbor, alt)
+
+    return distance
+`;
+
 /**
  * Dijkstra's algorithm on a 2D grid.
  *
