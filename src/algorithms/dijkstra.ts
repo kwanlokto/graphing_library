@@ -1,11 +1,7 @@
 import { Coordinate, GridType } from "@/types/grid";
-import { getCoordinate, getNeighbors, sleep } from "./helper";
+import { createPopulatedGrid, getCoordinate, getNeighbors, sleep } from "./helper";
 
 import { MinHeap } from "@/datastructures/min_heap";
-
-const createPopulatedGrid = (numRows: number, numCols: number, value: any) => {
-  return Array.from({ length: numRows }, () => Array(numCols).fill(value));
-};
 
 export const pseudocode = `
 // Dijkstra Pathfinding Pseudocode

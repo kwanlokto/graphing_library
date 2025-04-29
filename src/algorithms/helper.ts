@@ -163,3 +163,15 @@ export const randomlyPlaceWalls = (
 
   return newGrid;
 };
+
+/**
+ * Creates a 2D grid (array of arrays) populated with a specified value.
+ *
+ * @param {number} numRows - The number of rows in the grid.
+ * @param {number} numCols - The number of columns in each row.
+ * @param {*} value - The value to fill each cell in the grid.
+ * @returns {any[][]} A 2D array where each cell contains the specified value.
+ */
+export const createPopulatedGrid = (numRows: number, numCols: number, value: any) => {
+  return Array.from({ length: numRows }, () => Array(numCols).fill(value));
+};
