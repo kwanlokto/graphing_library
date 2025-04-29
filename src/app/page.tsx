@@ -1,8 +1,7 @@
 "use client";
 
 import { Box, Stack } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import { ThemeProvider, createTheme } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import {
   createEmptyGrid,
   getRandomCoordinate,
@@ -18,20 +17,6 @@ const App = () => {
   const [grid, setGrid] = useState<GridType>([]);
   const [disableGrid, setDisableGrid] = useState(false);
   const [algorithm, setAlgorithm] = useState("aStar");
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: isDarkMode ? "dark" : "light",
-          primary: {
-            main: isDarkMode ? "#90caf9" : "#1976d2",
-          },
-        },
-      }),
-    [isDarkMode]
-  );
 
   const initGrid = () => {
     setDisableGrid(false);

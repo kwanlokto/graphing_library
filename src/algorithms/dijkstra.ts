@@ -1,5 +1,11 @@
 import { Coordinate, GridType } from "@/types/grid";
-import { createPopulatedGrid, getCoordinate, getNeighbors, sleep } from "./helper";
+import {
+  createPopulatedGrid,
+  getCoordinate,
+  getNeighbors,
+  reconstructPath,
+  sleep,
+} from "./helper";
 
 import { MinHeap } from "@/datastructures/min_heap";
 
@@ -76,20 +82,5 @@ export const dijkstra = async (
     }
   }
 
-  // Reconstruct path
-  const path = [];
-  let current = end;
-
-  while (current) {
-    path.push(current);
-    current = prev[current.row][current.col];
-  }
-
-  path.reverse();
-
-  if (path[0].row !== start.row || path[0].col !== start.col) {
-    return []; // No valid path found
-  }
-
-  return path;
+  return reconstructPath(prev, start, end);
 };

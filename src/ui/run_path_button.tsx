@@ -3,6 +3,7 @@ import { Coordinate, GridType } from "@/types/grid";
 import { Dispatch, SetStateAction, useState } from "react";
 import { IoMdPlayCircle, IoMdRefresh } from "react-icons/io";
 
+import { BFS } from "@/algorithms/bfs";
 import { aStar } from "@/algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
 
@@ -48,6 +49,8 @@ export const RunButton = ({
       foundPath = await aStar(grid, setGrid);
     } else if (algorithm === "dijkstra") {
       foundPath = await dijkstra(grid, setGrid);
+    } else if (algorithm === "bfs") {
+      foundPath = await BFS(grid, setGrid);
     }
 
     if (foundPath.length > 0) {

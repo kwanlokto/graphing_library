@@ -186,3 +186,28 @@ export const createPopulatedGrid = (
 ) => {
   return Array.from({ length: numRows }, () => Array(numCols).fill(value));
 };
+
+
+/**
+ * 
+ */
+export const reconstructPath = (prev: (Coordinate | null)[][], start: Coordinate, end: Coordinate) => {
+  // Reconstruct path
+  const path: Coordinate[] = [];
+  let current: Coordinate | null = end;
+
+  while (current) {
+    // If we encounter the start, stop.
+    path.push(current);
+    current = prev[current.row][current.col];
+  }
+  console.log(path)
+
+  path.reverse();
+
+  if (path[0].row !== start.row || path[0].col !== start.col) {
+    return []; // No valid path found
+  }
+  console.log(path)
+  return path;
+}
