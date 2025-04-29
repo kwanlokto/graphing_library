@@ -46,7 +46,6 @@ export const dijkstra = async (
   const numCols = grid[0].length;
 
   const distances = createPopulatedGrid(numRows, numCols, Infinity);
-  const visited = createPopulatedGrid(numRows, numCols, false);
   const prev = createPopulatedGrid(numRows, numCols, null);
 
   distances[start.row][start.col] = 0;
@@ -56,9 +55,6 @@ export const dijkstra = async (
 
   while (!pq.isEmpty()) {
     const { row, col, dist } = pq.extractMin();
-
-    if (visited[row][col]) continue;
-    visited[row][col] = true;
 
     const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
     localGrid[row][col].isVisiting = true;
@@ -70,14 +66,12 @@ export const dijkstra = async (
     for (const neighbor of getNeighbors({ row, col }, grid)) {
       const { row: newRow, col: newCol } = neighbor;
 
-      if (!visited[newRow][newCol]) {
-        const newDist = dist + 1; // Add the cost of entering that cell to the distance
+      const newDist = dist + 1; // Add the cost of entering that cell to the distance
 
-        if (newDist < distances[newRow][newCol]) {
-          distances[newRow][newCol] = newDist;
-          prev[newRow][newCol] = { row, col };
-          pq.insert({ row: newRow, col: newCol, dist: newDist });
-        }
+      if (newDist < distances[newRow][newCol]) {
+        distances[newRow][newCol] = newDist;
+        prev[newRow][newCol] = { row, col };
+        pq.insert({ row: newRow, col: newCol, dist: newDist });
       }
     }
   }

@@ -51,8 +51,10 @@ export const getNeighbors = (
       r < grid.length &&
       c >= 0 &&
       c < grid[0].length &&
-      !grid[r][c].isWall
+      !grid[r][c].isWall &&
+      !grid[r][c].visited
     ) {
+      grid[r][c].visited = true;
       neighbors.push({ row: r, col: c });
     }
   }
@@ -84,7 +86,12 @@ export const createEmptyGrid = (numRows: number, numCols: number): GridType => {
   for (let row = 0; row < numRows; row++) {
     const currentRow = [];
     for (let col = 0; col < numCols; col++) {
-      currentRow.push({ isStart: false, isEnd: false, isWall: false });
+      currentRow.push({
+        isStart: false,
+        isEnd: false,
+        isWall: false,
+        visited: false,
+      });
     }
     grid.push(currentRow);
   }
@@ -172,6 +179,10 @@ export const randomlyPlaceWalls = (
  * @param {*} value - The value to fill each cell in the grid.
  * @returns {any[][]} A 2D array where each cell contains the specified value.
  */
-export const createPopulatedGrid = (numRows: number, numCols: number, value: any) => {
+export const createPopulatedGrid = (
+  numRows: number,
+  numCols: number,
+  value: any
+) => {
   return Array.from({ length: numRows }, () => Array(numCols).fill(value));
 };

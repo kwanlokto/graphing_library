@@ -2,6 +2,7 @@ export type CellType = {
   isStart: boolean;
   isEnd: boolean;
   isWall: boolean;
+  visited: boolean;
   isVisiting?: boolean;
   isPath?: boolean;
 };
