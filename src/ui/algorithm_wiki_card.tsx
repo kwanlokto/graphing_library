@@ -9,7 +9,7 @@ import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
 interface AlgorithmCardProps {
   name: string;
   description: string | ReactElement;
-  psudocode?: string;
+  psuedocode?: string;
 }
 
 export default function AlgorithmWikiCard({
