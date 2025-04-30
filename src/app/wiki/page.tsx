@@ -123,7 +123,11 @@ export default function SearchAlgorithmsPage() {
 
       <Suspense fallback={<Typography>Loading...</Typography>}>
         {currentAlgo ? (
-          <AlgorithmWikiCard {...currentAlgo} />
+          <AlgorithmWikiCard
+            name={currentAlgo.name}
+            description={currentAlgo.description}
+            psuedocode={currentAlgo.pseudocode}
+          />
         ) : (
           <Typography>No algorithms found.</Typography>
         )}
