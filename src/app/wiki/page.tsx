@@ -14,6 +14,7 @@ import {
 } from "react-icons/md";
 import { Suspense, lazy, useState } from "react";
 
+import { pseudocode as BFSPseudocode } from "@/algorithms/bfs";
 import Link from "next/link";
 import React from "react";
 import { pseudocode as aStarPseudocode } from "@/algorithms/a_star";
@@ -23,25 +24,24 @@ const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card")); // laz
 
 const searchAlgorithms = [
   // {
-  //   name: "Linear Search",
-  //   description:
-  //     "Checks each element one by one until the target is found or the list ends.",
-  // },
-  // {
-  //   name: "Binary Search",
-  //   description:
-  //     "Efficiently searches sorted lists by repeatedly halving the search space.",
-  // },
-  // {
   //   name: "Depth-First Search (DFS)",
   //   description:
   //     "Explores as far as possible along each branch before backtracking.",
   // },
-  // {
-  //   name: "Breadth-First Search (BFS)",
-  //   description:
-  //     "Explores all nodes at the current depth before moving to the next level.",
-  // },
+  {
+    name: "Breadth-First Search (BFS)",
+    description: (
+      <>
+        Breadth-First Search (BFS) is a graph traversal algorithm that explores
+        nodes level by level. Starting from a given node (the "start" or
+        "source"), BFS visits all neighboring nodes before moving on to their
+        neighbors. This makes it ideal for finding the shortest path in an
+        unweighted graph or grid, as it guarantees the shortest number of steps
+        from the start to any reachable node.
+      </>
+    ),
+    pseudocode: BFSPseudocode,
+  },
   {
     name: "A* Search",
     key: "a-star",
@@ -123,7 +123,11 @@ export default function SearchAlgorithmsPage() {
 
       <Suspense fallback={<Typography>Loading...</Typography>}>
         {currentAlgo ? (
-          <AlgorithmWikiCard {...currentAlgo} />
+          <AlgorithmWikiCard
+            name={currentAlgo.name}
+            description={currentAlgo.description}
+            psuedocode={currentAlgo.pseudocode}
+          />
         ) : (
           <Typography>No algorithms found.</Typography>
         )}

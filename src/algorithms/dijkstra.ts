@@ -1,5 +1,11 @@
 import { Coordinate, GridType } from "@/types/grid";
-import { createPopulatedGrid, getCoordinate, getNeighbors, sleep } from "./helper";
+import {
+  createPopulatedGrid,
+  getCoordinate,
+  getNeighbors,
+  reconstructPath,
+  sleep,
+} from "./helper";
 
 import { MinHeap } from "@/datastructures/min_heap";
 
@@ -34,9 +40,11 @@ function Dijkstra(Graph, source):
  *          or an empty array if no path is found.
  */
 export const dijkstra = async (
-  grid: GridType,
+  __grid: GridType,
   setGrid: (grid: GridType) => void
 ): Promise<Coordinate[]> => {
+  const grid = __grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+
   const start = getCoordinate(grid, "isStart");
   const end = getCoordinate(grid, "isEnd");
   if (start === null || end === null)
@@ -45,8 +53,12 @@ export const dijkstra = async (
   const numRows = grid.length;
   const numCols = grid[0].length;
 
-  const distances = createPopulatedGrid(numRows, numCols, Infinity);
-  const prev = createPopulatedGrid(numRows, numCols, null);
+  const distances: number[][] = createPopulatedGrid(numRows, numCols, Infinity);
+  const prev: (Coordinate | null)[][] = createPopulatedGrid(
+    numRows,
+    numCols,
+    null
+  );
 
   distances[start.row][start.col] = 0;
 
@@ -56,7 +68,7 @@ export const dijkstra = async (
   while (!pq.isEmpty()) {
     const { row, col, dist } = pq.extractMin();
 
-    const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+    const localGrid = __grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
     localGrid[row][col].isVisiting = true;
     setGrid(localGrid);
     await sleep(100); // sleeps for 0.1 second
@@ -67,7 +79,6 @@ export const dijkstra = async (
       const { row: newRow, col: newCol } = neighbor;
 
       const newDist = dist + 1; // Add the cost of entering that cell to the distance
-
       if (newDist < distances[newRow][newCol]) {
         distances[newRow][newCol] = newDist;
         prev[newRow][newCol] = { row, col };
@@ -76,20 +87,5 @@ export const dijkstra = async (
     }
   }
 
-  // Reconstruct path
-  const path = [];
-  let current = end;
-
-  while (current) {
-    path.push(current);
-    current = prev[current.row][current.col];
-  }
-
-  path.reverse();
-
-  if (path[0].row !== start.row || path[0].col !== start.col) {
-    return []; // No valid path found
-  }
-
-  return path;
+  return reconstructPath(prev, start, end);
 };

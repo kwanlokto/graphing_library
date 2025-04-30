@@ -31,6 +31,12 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
         >
           Dijkstra
         </Button>
+        <Button
+          variant={algorithm === "bfs" ? "contained" : "outlined"}
+          onClick={() => setAlgorithm("bfs")}
+        >
+          BFS
+        </Button>
       </ButtonGroup>
     </Box>
   );
