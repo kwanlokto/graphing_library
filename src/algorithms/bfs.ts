@@ -7,6 +7,29 @@ import {
   sleep,
 } from "./helper";
 
+export const pseudocode = `
+// BFS Pseudocode
+
+function BFS(start, goal, grid):
+    create a queue and enqueue start
+    mark start as visited
+    create a map prev to track the previous node for each visited cell
+
+    while queue is not empty:
+        current = dequeue from queue
+
+        if current == goal:
+            break
+
+        for each neighbor of current:
+            if neighbor is within bounds AND not a wall AND not visited:
+                enqueue neighbor
+                mark neighbor as visited
+                set prev[neighbor] = current
+
+    return prev
+`;
+
 /**
  * Performs the BFS pathfinding algorithm on a 2D grid.
  *
