@@ -35,7 +35,6 @@ export const BFS = async (
   );
 
   const queue: Coordinate[] = [start];
-  grid[start.row][start.col].visited = true
 
   while (queue.length > 0) {
     const current = queue.shift()!;

@@ -64,7 +64,6 @@ export const dijkstra = async (
 
   const pq = new MinHeap();
   pq.insert({ row: start.row, col: start.col, dist: 0 });
-  grid[start.row][start.col].visited = true
 
   while (!pq.isEmpty()) {
     const { row, col, dist } = pq.extractMin();
