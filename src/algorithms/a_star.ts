@@ -3,6 +3,7 @@ import {
   createPopulatedGrid,
   getCoordinate,
   getNeighbors,
+  manhattanHeuristic,
   reconstructPath,
   sleep,
 } from "./helper";
@@ -37,7 +38,7 @@ function AStar(start, goal):
 /**
  * Performs the A* pathfinding algorithm on a 2D grid.
  *
- * @param grid - A 2D array representing the grid; each cell holds data about walls, etc.
+ * @param __grid - A 2D array representing the grid; each cell holds data about walls, etc.
  * @param setGrid - Setter function to update the grid.
  * @returns An array of Coordinates representing the shortest path from start to end,
  *          or an empty array if no path is found.
@@ -62,7 +63,7 @@ export const aStar = async (
 
   // fScore estimates the total cost from start to end passing through each cell
   const fScore: number[][] = createPopulatedGrid(numRows, numCols, Infinity);
-  fScore[start.row][start.col] = heuristic(start, end);
+  fScore[start.row][start.col] = manhattanHeuristic(start, end);
 
   const prev: (Coordinate | null)[][] = createPopulatedGrid(
     numRows,
@@ -104,7 +105,7 @@ export const aStar = async (
       if (tentativeG < gScore[newRow][newCol]) {
         // This path to neighbor is better than any previous one
         gScore[newRow][newCol] = tentativeG;
-        fScore[newRow][newCol] = tentativeG + heuristic(neighbor, end);
+        fScore[newRow][newCol] = tentativeG + manhattanHeuristic(neighbor, end);
 
         // If neighbor is not already in openSet, add it
         if (!openSet.some((n) => n.row === newRow && n.col === newCol)) {
@@ -119,14 +120,4 @@ export const aStar = async (
   return reconstructPath(prev, start, end);
 };
 
-/**
- * Calculates the Manhattan distance between two coordinates.
- *
- * @param a - The first coordinate.
- * @param b - The second coordinate.
- * @returns The Manhattan distance between the two points (used as a heuristic in A*).
- */
-function heuristic(a: Coordinate, b: Coordinate): number {
-  // Manhattan distance: horizontal + vertical distance
-  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
+

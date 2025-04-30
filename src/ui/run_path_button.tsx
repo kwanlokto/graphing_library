@@ -6,6 +6,7 @@ import { IoMdPlayCircle, IoMdRefresh } from "react-icons/io";
 import { BFS } from "@/algorithms/bfs";
 import { aStar } from "@/algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
+import { greedyBestFirstSearch } from "@/algorithms/greedy_bfs";
 
 interface RunButtonProps {
   gridState: [GridType, Dispatch<SetStateAction<GridType>>];
@@ -51,6 +52,8 @@ export const RunButton = ({
       foundPath = await dijkstra(grid, setGrid);
     } else if (algorithm === "bfs") {
       foundPath = await BFS(grid, setGrid);
+    } else if (algorithm === "gbfs") {
+      foundPath = await greedyBestFirstSearch(grid, setGrid);
     }
 
     if (foundPath.length > 0) {
