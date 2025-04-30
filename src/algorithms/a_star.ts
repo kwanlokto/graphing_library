@@ -1,5 +1,11 @@
 import { Coordinate, GridType } from "@/types/grid";
-import { getCoordinate, getNeighbors, sleep } from "./helper";
+import {
+  createPopulatedGrid,
+  getCoordinate,
+  getNeighbors,
+  reconstructPath,
+  sleep,
+} from "./helper";
 
 export const pseudocode = `
 // A* Pathfinding Pseudocode
@@ -37,30 +43,35 @@ function AStar(start, goal):
  *          or an empty array if no path is found.
  */
 export const aStar = async (
-  grid: GridType,
+  __grid: GridType,
   setGrid: (grid: GridType) => void
 ): Promise<Coordinate[]> => {
+  const grid = __grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+
   const start = getCoordinate(grid, "isStart");
   const end = getCoordinate(grid, "isEnd");
   if (start === null || end === null)
     throw Error("Failed to find start or end");
 
-  const rows = grid.length;
-  const cols = grid[0].length;
-
-  // The set of discovered nodes that may need to be re-evaluated
-  const openSet: Coordinate[] = [start];
-
-  // Maps a coordinate key (like "3,4") to the coordinate it came from (for path reconstruction)
-  const cameFrom = new Map<string, Coordinate>();
+  const numRows = grid.length;
+  const numCols = grid[0].length;
 
   // gScore stores the cost of the cheapest path from start to each cell
-  const gScore = Array.from({ length: rows }, () => Array(cols).fill(Infinity));
+  const gScore: number[][] = createPopulatedGrid(numRows, numCols, Infinity);
   gScore[start.row][start.col] = 0;
 
   // fScore estimates the total cost from start to end passing through each cell
-  const fScore = Array.from({ length: rows }, () => Array(cols).fill(Infinity));
+  const fScore: number[][] = createPopulatedGrid(numRows, numCols, Infinity);
   fScore[start.row][start.col] = heuristic(start, end);
+
+  const prev: (Coordinate | null)[][] = createPopulatedGrid(
+    numRows,
+    numCols,
+    null
+  );
+
+  // The set of discovered nodes that may need to be re-evaluated
+  const openSet: Coordinate[] = [start];
 
   while (openSet.length > 0) {
     // Find the node in openSet with the lowest fScore
@@ -74,32 +85,30 @@ export const aStar = async (
     }
 
     const current = openSet[currentIndex];
-    const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+    const localGrid = __grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
     localGrid[current.row][current.col].isVisiting = true;
     setGrid(localGrid);
     await sleep(100); // sleeps for 0.1 second
 
     // If we've reached the goal, reconstruct and return the path
-    if (current.row === end.row && current.col === end.col) {
-      return reconstructPath(cameFrom, current);
-    }
+    if (grid[current.row][current.col].isEnd) break;
 
     // Remove the current node from openSet
     openSet.splice(currentIndex, 1);
 
     // Explore neighbors of the current node
     for (const neighbor of getNeighbors(current, grid)) {
-      const { row, col } = neighbor;
+      const { row: newRow, col: newCol } = neighbor;
       const tentativeG = gScore[current.row][current.col] + 1;
 
-      if (tentativeG < gScore[row][col]) {
+      if (tentativeG < gScore[newRow][newCol]) {
         // This path to neighbor is better than any previous one
-        cameFrom.set(`${row},${col}`, current);
-        gScore[row][col] = tentativeG;
-        fScore[row][col] = tentativeG + heuristic(neighbor, end);
+        gScore[newRow][newCol] = tentativeG;
+        fScore[newRow][newCol] = tentativeG + heuristic(neighbor, end);
 
         // If neighbor is not already in openSet, add it
-        if (!openSet.some((n) => n.row === row && n.col === col)) {
+        if (!openSet.some((n) => n.row === newRow && n.col === newCol)) {
+          prev[newRow][newCol] = current;
           openSet.push(neighbor);
         }
       }
@@ -107,7 +116,7 @@ export const aStar = async (
   }
 
   // No path was found
-  return [];
+  return reconstructPath(prev, start, end);
 };
 
 /**
@@ -120,27 +129,4 @@ export const aStar = async (
 function heuristic(a: Coordinate, b: Coordinate): number {
   // Manhattan distance: horizontal + vertical distance
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
-
-/**
- * Reconstructs the path from the end coordinate to the start using the `cameFrom` map.
- *
- * @param cameFrom - A map of each visited cell and the cell it came from.
- * @param current - The end coordinate.
- * @returns An array of coordinates representing the path from start to end.
- */
-function reconstructPath(
-  cameFrom: Map<string, Coordinate>,
-  current: Coordinate
-): Coordinate[] {
-  const path: Coordinate[] = [current];
-
-  // Backtrack from current to start using the map
-  while (cameFrom.has(`${current.row},${current.col}`)) {
-    current = cameFrom.get(`${current.row},${current.col}`)!;
-    path.push(current);
-  }
-
-  // Reverse to get path from start to end
-  return path.reverse();
 }
