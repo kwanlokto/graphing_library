@@ -16,9 +16,10 @@ import {
  *          or an empty array if no path is found.
  */
 export const BFS = async (
-  grid: GridType,
+  __grid: GridType,
   setGrid: (grid: GridType) => void
 ): Promise<Coordinate[]> => {
+  const grid = __grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
   const start = getCoordinate(grid, "isStart");
   const end = getCoordinate(grid, "isEnd");
   if (start === null || end === null)
@@ -27,13 +28,21 @@ export const BFS = async (
   const numRows = grid.length;
   const numCols = grid[0].length;
 
-  const prev = createPopulatedGrid(numRows, numCols, null);
+  const prev: (Coordinate | null)[][] = createPopulatedGrid(
+    numRows,
+    numCols,
+    null
+  );
 
   const queue: Coordinate[] = [start];
+  grid[start.row][start.col].visited = true
+
   while (queue.length > 0) {
     const current = queue.shift()!;
 
-    const localGrid = grid.map((rowArr) => rowArr.map((cell) => ({ ...cell })));
+    const localGrid = __grid.map((rowArr) =>
+      rowArr.map((cell) => ({ ...cell }))
+    );
     localGrid[current.row][current.col].isVisiting = true;
     setGrid(localGrid);
     await sleep(100); // sleeps for 0.1 second
@@ -45,8 +54,6 @@ export const BFS = async (
       prev[newRow][newCol] = current;
       queue.push({ row: newRow, col: newCol });
     }
-
-    await new Promise((res) => setTimeout(res, 0)); // allow UI to update
   }
 
   return reconstructPath(prev, start, end);

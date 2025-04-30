@@ -201,13 +201,11 @@ export const reconstructPath = (prev: (Coordinate | null)[][], start: Coordinate
     path.push(current);
     current = prev[current.row][current.col];
   }
-  console.log(path)
 
   path.reverse();
 
   if (path[0].row !== start.row || path[0].col !== start.col) {
     return []; // No valid path found
   }
-  console.log(path)
   return path;
 }
