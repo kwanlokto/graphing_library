@@ -89,7 +89,7 @@ export default function SearchAlgorithmsPage() {
   };
 
   return (
-    <Box sx={{ px: 2, py: 6, mx: "auto", maxWidth: 800 }}>
+    <Box>
       <Typography variant="h3" component="h1" align="center" gutterBottom>
         Algorithms
       </Typography>
@@ -143,12 +143,6 @@ export default function SearchAlgorithmsPage() {
         >
           <MdOutlineKeyboardArrowRight />
         </IconButton>
-      </Box>
-
-      <Box mt={8} textAlign="center">
-        <Button component={Link} href="/" variant="text" color="primary">
-          ← Back to Home
-        </Button>
       </Box>
     </Box>
   );

@@ -37,6 +37,12 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
         >
           BFS
         </Button>
+        <Button
+          variant={algorithm === "gbfs" ? "contained" : "outlined"}
+          onClick={() => setAlgorithm("gbfs")}
+        >
+          Greedy BFS
+        </Button>
       </ButtonGroup>
     </Box>
   );

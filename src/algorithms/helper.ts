@@ -214,3 +214,16 @@ export const reconstructPath = (
   path.push(start); // Add start node
   return path.reverse();
 };
+
+
+/**
+ * Calculates the Manhattan distance between two coordinates.
+ *
+ * @param a - The first coordinate.
+ * @param b - The second coordinate.
+ * @returns The Manhattan distance between the two points (used as a heuristic in A*).
+ */
+export const manhattanHeuristic = (a: Coordinate, b: Coordinate): number => {
+  // Manhattan distance: horizontal + vertical distance
+  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
+}

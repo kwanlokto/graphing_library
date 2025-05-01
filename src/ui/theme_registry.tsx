@@ -39,7 +39,7 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
           gap: 3,
           padding: 2,
           backgroundColor: theme.palette.background.default,
-          minHeight: "100vh",
+          minHeight: "100%",
         }}
       >
         <Stack
