@@ -3,7 +3,6 @@
 import {
   Autocomplete,
   Box,
-  Button,
   IconButton,
   TextField,
   Typography,
@@ -15,7 +14,7 @@ import {
 import { Suspense, lazy, useState } from "react";
 
 import { pseudocode as BFSPseudocode } from "@/algorithms/bfs";
-import Link from "next/link";
+import { pseudocode as GreedyBFSPseudocode } from "@/algorithms/greedy_bfs";
 import React from "react";
 import { pseudocode as aStarPseudocode } from "@/algorithms/a_star";
 import { pseudocode as dijkstraPseudocode } from "@/algorithms/dijkstra";
@@ -23,11 +22,6 @@ import { pseudocode as dijkstraPseudocode } from "@/algorithms/dijkstra";
 const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card")); // lazy-loaded component
 
 const searchAlgorithms = [
-  // {
-  //   name: "Depth-First Search (DFS)",
-  //   description:
-  //     "Explores as far as possible along each branch before backtracking.",
-  // },
   {
     name: "Breadth-First Search (BFS)",
     description: (
@@ -41,6 +35,18 @@ const searchAlgorithms = [
       </>
     ),
     pseudocode: BFSPseudocode,
+  },
+  {
+    name: "Greedy Best-First Search (BFS)",
+    description: (
+      <>
+        Greedy Best-First Search (Greedy BFS) is a heuristic search algorithm
+        used to find a path from a starting node to a goal node in a graph. It
+        is called "greedy" because it always selects the node that appears to be
+        closest to the goal, based solely on a heuristic function h(n)
+      </>
+    ),
+    pseudocode: GreedyBFSPseudocode,
   },
   {
     name: "A* Search",
