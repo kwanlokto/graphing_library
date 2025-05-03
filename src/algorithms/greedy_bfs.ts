@@ -8,6 +8,40 @@ import {
   sleep,
 } from "./helper";
 
+export const pseudocode = `
+// Greedy Best First Search Pathfinding Pseudocode
+
+function GreedyBestFirstSearch(start, goal):
+    openSet ← PriorityQueue ordered by h(n)
+    openSet.add(start)
+    cameFrom ← empty map
+    visited ← empty set
+
+    while openSet is not empty:
+        current ← openSet.pop()
+
+        if current == goal:
+            return reconstruct_path(cameFrom, current)
+
+        visited.add(current)
+
+        for each neighbor of current:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                cameFrom[neighbor] ← current
+                openSet.add(neighbor)
+
+    return failure (no path found)
+
+
+function reconstruct_path(cameFrom, current):
+    path ← [current]
+    while current in cameFrom:
+        current ← cameFrom[current]
+        path.prepend(current)
+    return path
+`;
+
 /**
  * Performs the Greedy Best-First Search algorithm on a 2D grid to find the shortest path
  * from the start node to the end node using a heuristic-based approach (Manhattan distance).
