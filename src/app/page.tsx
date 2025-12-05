@@ -20,17 +20,17 @@ const App = () => {
 
   const initGrid = () => {
     setDisableGrid(false);
-    const localGrid = createEmptyGrid(20, 20);
+    const localGrid = createEmptyGrid(15, 15);
     // Randomly generate start and end, ensuring they don't overlap
-    const randomStart = getRandomCoordinate(20, 20);
-    let randomEnd = getRandomCoordinate(20, 20);
+    const randomStart = getRandomCoordinate(15, 15);
+    let randomEnd = getRandomCoordinate(15, 15);
 
     // Ensure start and end are not the same
     while (
       randomStart.row === randomEnd.row &&
       randomStart.col === randomEnd.col
     ) {
-      randomEnd = getRandomCoordinate(20, 20);
+      randomEnd = getRandomCoordinate(15, 15);
     }
 
     // Update the grid to reflect the new start and end positions
