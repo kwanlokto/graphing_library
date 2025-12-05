@@ -117,7 +117,7 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
           maxWidth: "600px",
           aspectRatio: "1 / 1",
           display: "grid",
-          gridTemplateColumns: `repeat(${grid[0].length}, 1fr)`,
+          gridTemplateColumns: `repeat(${grid[0]?.length}, 1fr)`,
           gridTemplateRows: `repeat(${grid.length}, 1fr)`,
         }}
         onMouseLeave={() => setIsMouseDown(false)}
