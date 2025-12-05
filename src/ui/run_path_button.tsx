@@ -93,7 +93,7 @@ export const RunButton = ({
           {isRunning ? (
             <CircularProgress size={24} color="inherit" />
           ) : (
-            "Start Pathfinding"
+            "Start"
           )}
         </Button>
       ) : (

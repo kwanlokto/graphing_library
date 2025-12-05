@@ -27,6 +27,7 @@ const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card"));
 const searchAlgorithms = [
   {
     name: "Breadth-First Search (BFS)",
+    key: "bfs",
     description: (
       <>
         Breadth-First Search (BFS) is a graph traversal algorithm that explores
@@ -41,6 +42,7 @@ const searchAlgorithms = [
   },
   {
     name: "Greedy Best-First Search (BFS)",
+    key: "greedy-bfs",
     description: (
       <>
         Greedy Best-First Search (Greedy BFS) is a heuristic search algorithm
