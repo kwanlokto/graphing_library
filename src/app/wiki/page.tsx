@@ -4,8 +4,11 @@ import {
   Autocomplete,
   Box,
   IconButton,
+  Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import {
   MdOutlineKeyboardArrowLeft,
@@ -19,7 +22,7 @@ import React from "react";
 import { pseudocode as aStarPseudocode } from "@/algorithms/a_star";
 import { pseudocode as dijkstraPseudocode } from "@/algorithms/dijkstra";
 
-const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card")); // lazy-loaded component
+const AlgorithmWikiCard = lazy(() => import("@/ui/algorithm_wiki_card"));
 
 const searchAlgorithms = [
   {
@@ -80,6 +83,9 @@ export default function SearchAlgorithmsPage() {
   const [index, setIndex] = useState(0);
   const [query, setQuery] = useState("");
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const filteredAlgorithms = searchAlgorithms.filter((algo) =>
     algo.name.toLowerCase().includes(query.toLowerCase())
   );
@@ -95,16 +101,31 @@ export default function SearchAlgorithmsPage() {
   };
 
   return (
-    <Box>
-      <Typography variant="h3" component="h1" align="center" gutterBottom>
+    <Box
+      sx={{
+        px: { xs: 1.5, sm: 3 },
+        pb: 4,
+        maxWidth: "100%",
+        mx: "auto",
+      }}
+    >
+      {/* Title */}
+      <Typography
+        variant={isMobile ? "h5" : "h3"}
+        component="h1"
+        align="center"
+        gutterBottom
+      >
         Algorithms
       </Typography>
 
+      {/* Search Bar */}
       <Autocomplete
         fullWidth
         options={searchAlgorithms}
         getOptionLabel={(option) => option.name}
         value={currentAlgo || null}
+        isOptionEqualToValue={(a, b) => a.key === b?.key}
         onChange={(event, newValue) => {
           const newIndex = filteredAlgorithms.findIndex(
             (algo) => algo.key === newValue?.key
@@ -120,13 +141,15 @@ export default function SearchAlgorithmsPage() {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Search..."
+            label="Search algorithms..."
             variant="outlined"
             margin="normal"
+            size={isMobile ? "small" : "medium"}
           />
         )}
       />
 
+      {/* Card */}
       <Suspense fallback={<Typography>Loading...</Typography>}>
         {currentAlgo ? (
           <AlgorithmWikiCard
@@ -139,17 +162,31 @@ export default function SearchAlgorithmsPage() {
         )}
       </Suspense>
 
-      <Box mt={2} display="flex" justifyContent="space-between">
-        <IconButton onClick={handlePrev} disabled={index === 0}>
-          <MdOutlineKeyboardArrowLeft />
+      {/* Navigation Buttons */}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{
+          mt: 2,
+          px: 1,
+        }}
+      >
+        <IconButton
+          onClick={handlePrev}
+          disabled={index === 0}
+          size={isMobile ? "small" : "medium"}
+        >
+          <MdOutlineKeyboardArrowLeft size={isMobile ? 22 : 28} />
         </IconButton>
+
         <IconButton
           onClick={handleNext}
           disabled={index >= filteredAlgorithms.length - 1}
+          size={isMobile ? "small" : "medium"}
         >
-          <MdOutlineKeyboardArrowRight />
+          <MdOutlineKeyboardArrowRight size={isMobile ? 22 : 28} />
         </IconButton>
-      </Box>
+      </Stack>
     </Box>
   );
 }

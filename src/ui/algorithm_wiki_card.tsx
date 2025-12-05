@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 import { ReactElement } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -17,25 +17,78 @@ export default function AlgorithmWikiCard({
   description,
   psuedocode,
 }: AlgorithmCardProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Card
       variant="outlined"
       sx={{
-        mt: 4,
-        transition: "0.3s",
-        "&:hover": { boxShadow: 3 },
+        mt: 3,
         borderRadius: 2,
+        overflow: "hidden",
+        mx: "auto",
+        width: "100%",
+        maxWidth: 800,
+        boxShadow: 1,
       }}
     >
-      <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
+      <CardContent
+        sx={{
+          p: { xs: 2, sm: 3 },
+        }}
+      >
+        {/* Title */}
+        <Typography
+          variant={isMobile ? "h6" : "h5"}
+          component="div"
+          gutterBottom
+          sx={{
+            fontWeight: 600,
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
           {name}
         </Typography>
-        <Typography color="text.secondary">{description}</Typography>
+
+        {/* Description */}
+        <Typography
+          color="text.secondary"
+          sx={{
+            fontSize: isMobile ? "0.9rem" : "1rem",
+            lineHeight: 1.5,
+            mb: 2,
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
+          {description}
+        </Typography>
+
+        {/* Pseudocode */}
         {psuedocode && (
-          <SyntaxHighlighter language="text" style={tomorrow}>
-            {psuedocode}
-          </SyntaxHighlighter>
+          <Box
+            sx={{
+              mt: 2,
+              overflowX: "auto",
+              borderRadius: 1,
+              border: "1px solid",
+              borderColor: "divider",
+            }}
+          >
+            <SyntaxHighlighter
+              language="text"
+              style={tomorrow}
+              customStyle={{
+                margin: 0,
+                padding: isMobile ? "12px" : "16px",
+                fontSize: isMobile ? "0.75rem" : "0.85rem",
+                background: theme.palette.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+              }}
+              wrapLongLines={false}
+            >
+              {psuedocode}
+            </SyntaxHighlighter>
+          </Box>
         )}
       </CardContent>
     </Card>
