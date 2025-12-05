@@ -1,5 +1,5 @@
-import { Box, Button, ButtonGroup } from "@mui/material";
-import { CellType, Coordinate, GridType } from "@/types/grid";
+import { Box, Button, ButtonGroup, useMediaQuery } from "@mui/material";
+import { CellType, GridType } from "@/types/grid";
 import React, { useState } from "react";
 
 import { randomlyPlaceWalls } from "@/algorithms/helper";
@@ -28,24 +28,17 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [editMode, setEditMode] = useState<"start" | "end" | "wall">("wall");
 
+  const isMobile = useMediaQuery("(max-width: 900px)");
+
   const handleMouseDown = (row: number, col: number) => {
     const newGrid = grid.map((row) => row.map((cell) => ({ ...cell })));
-
     const cell = newGrid[row][col];
 
     if (editMode === "start") {
-      for (let r = 0; r < newGrid.length; r++) {
-        for (let c = 0; c < newGrid[r].length; c++) {
-          newGrid[r][c].isStart = false;
-        }
-      }
+      newGrid.forEach((r) => r.forEach((c) => (c.isStart = false)));
       cell.isStart = true;
     } else if (editMode === "end") {
-      for (let r = 0; r < newGrid.length; r++) {
-        for (let c = 0; c < newGrid[r].length; c++) {
-          newGrid[r][c].isEnd = false;
-        }
-      }
+      newGrid.forEach((r) => r.forEach((c) => (c.isEnd = false)));
       cell.isEnd = true;
     } else if (editMode === "wall" && !cell.isStart && !cell.isEnd) {
       cell.isWall = !cell.isWall;
@@ -59,29 +52,24 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row", // vertical on small, horizontal on medium+
-        justifyContent: "space-between",
-        gap: 8,
+        flexDirection: { xs: "column", md: "row" },
+        gap: 3,
+        width: "100%",
       }}
     >
-      {/* Button Group */}
+      {/* CONTROLS */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: { xs: "center", md: "flex-start" },
-          mb: { xs: 2, md: 0 },
-          width: "100%",
-          gap: 8,
+          width: { xs: "100%", md: "200px" },
+          gap: 2,
         }}
       >
+        {/* Button Group */}
         <ButtonGroup
           fullWidth
-          orientation={
-            typeof window !== "undefined" && window.innerWidth < 900
-              ? "horizontal"
-              : "vertical"
-          }
+          orientation={isMobile ? "horizontal" : "vertical"}
           variant="outlined"
           disabled={disabled}
         >
@@ -91,12 +79,14 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
           >
             Start
           </Button>
+
           <Button
             variant={editMode === "end" ? "contained" : "outlined"}
             onClick={() => setEditMode("end")}
           >
             End
           </Button>
+
           <Button
             variant={editMode === "wall" ? "contained" : "outlined"}
             onClick={() => setEditMode("wall")}
@@ -104,13 +94,14 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
             Walls
           </Button>
         </ButtonGroup>
+
         <Button
           fullWidth
           variant="contained"
           color="secondary"
           disabled={disabled}
           onClick={() => {
-            const updatedGrid = randomlyPlaceWalls(grid, 20); // 20% density for walls
+            const updatedGrid = randomlyPlaceWalls(grid, 20);
             setGrid(updatedGrid);
           }}
         >
@@ -118,12 +109,16 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
         </Button>
       </Box>
 
-      {/* Grid */}
+      {/* RESPONSIVE GRID */}
       <Box
         sx={{
+          flexGrow: 1,
+          width: "100%",
+          maxWidth: "600px",
+          aspectRatio: "1 / 1",
           display: "grid",
-          gridTemplateColumns: "repeat(20, 40px)",
-          gridTemplateRows: "repeat(20, 40px)",
+          gridTemplateColumns: `repeat(${grid[0].length}, 1fr)`,
+          gridTemplateRows: `repeat(${grid.length}, 1fr)`,
         }}
         onMouseLeave={() => setIsMouseDown(false)}
       >
@@ -132,12 +127,11 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
             <Box
               key={`${rowIdx}-${colIdx}`}
               sx={{
-                width: 40,
-                height: 40,
+                width: "100%",
+                aspectRatio: "1/1",
                 backgroundColor: getCellBgColor(cell),
                 border: "1px solid #ccc",
                 cursor: "pointer",
-                display: "inline-block",
                 ...(!disabled && {
                   "&:hover": {
                     backgroundColor: cell.isWall ? "#616161" : "#bbdefb",
