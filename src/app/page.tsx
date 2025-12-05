@@ -53,8 +53,8 @@ const App = () => {
     <>
       {/* Top Row: Algorithm Selector and Theme Toggle */}
       <Stack
-        direction="row"
-        spacing={2}
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{xs: 0, sm: 2}}
         justifyContent="space-between"
         sx={{ width: "100%" }}
       >

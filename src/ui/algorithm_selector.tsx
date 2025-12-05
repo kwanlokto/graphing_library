@@ -14,11 +14,11 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
   setAlgorithm,
 }) => {
   return (
-    <Box display="flex" flexDirection="column" gap={1}>
+    <Box display="flex" flexDirection="column" gap={1} width="100%">
       <Typography variant="subtitle1" fontWeight="bold" color="text.primary">
         Algorithm
       </Typography>
-      <ButtonGroup sx={{ mb: 1, minHeight: 40 }}>
+      <ButtonGroup sx={{ mb: 1, minHeight: 40 }} fullWidth>
         <Button
           variant={algorithm === "aStar" ? "contained" : "outlined"}
           onClick={() => setAlgorithm("aStar")}
