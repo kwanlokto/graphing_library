@@ -49,8 +49,8 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
             maxWidth: "1280px",
             width: "100%",
             margin: "0 auto",
-            px: 18,
-            py: 4,
+            px: { xs: 0, sm: 18 },
+            py: { xs: 0, sm: 4 },
             backgroundColor: theme.palette.background.default,
           }}
         >
