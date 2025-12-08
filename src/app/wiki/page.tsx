@@ -87,29 +87,26 @@ export default function SearchAlgorithmsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // Filter results
-  const filteredAlgorithms = searchAlgorithms.filter((algo) =>
-    algo.name.toLowerCase().includes(query.toLowerCase())
-  );
-
   // Current algorithm object
   const currentAlgo =
     searchAlgorithms.find((a) => a.key === selectedKey) || null;
 
   // Index of the selected algorithm within filtered results
-  const filteredIndex = filteredAlgorithms.findIndex(
+  const selectedIndex = searchAlgorithms.findIndex(
     (a) => a.key === selectedKey
   );
 
   const handleNext = () => {
-    if (filteredIndex < filteredAlgorithms.length - 1) {
-      setSelectedKey(filteredAlgorithms[filteredIndex + 1].key);
+    console.log(selectedIndex, searchAlgorithms.length);
+    if (selectedIndex < searchAlgorithms.length - 1) {
+      console.log(searchAlgorithms[selectedIndex + 1].key);
+      setSelectedKey(searchAlgorithms[selectedIndex + 1].key);
     }
   };
 
   const handlePrev = () => {
-    if (filteredIndex > 0) {
-      setSelectedKey(filteredAlgorithms[filteredIndex - 1].key);
+    if (selectedIndex > 0) {
+      setSelectedKey(searchAlgorithms[selectedIndex - 1].key);
     }
   };
 
@@ -149,6 +146,9 @@ export default function SearchAlgorithmsPage() {
         onInputChange={(event, newInputValue) => {
           setQuery(newInputValue);
           // Reset index after search
+          const filteredAlgorithms = searchAlgorithms.filter((algo) =>
+            algo.name.toLowerCase().includes(newInputValue.toLowerCase())
+          );
           if (filteredAlgorithms.length > 0) {
             setSelectedKey(filteredAlgorithms[0].key);
           }
@@ -185,7 +185,7 @@ export default function SearchAlgorithmsPage() {
       >
         <IconButton
           onClick={handlePrev}
-          disabled={filteredIndex <= 0}
+          disabled={selectedIndex <= 0}
           size={isMobile ? "small" : "medium"}
         >
           <MdOutlineKeyboardArrowLeft size={isMobile ? 22 : 28} />
@@ -193,7 +193,7 @@ export default function SearchAlgorithmsPage() {
 
         <IconButton
           onClick={handleNext}
-          disabled={filteredIndex >= filteredAlgorithms.length - 1}
+          disabled={selectedIndex >= searchAlgorithms.length - 1}
           size={isMobile ? "small" : "medium"}
         >
           <MdOutlineKeyboardArrowRight size={isMobile ? 22 : 28} />
