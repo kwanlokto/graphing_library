@@ -14,11 +14,10 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 
 import { pseudocode as BFSPseudocode } from "@/algorithms/bfs";
 import { pseudocode as GreedyBFSPseudocode } from "@/algorithms/greedy_bfs";
-import React from "react";
 import { pseudocode as aStarPseudocode } from "@/algorithms/a_star";
 import { pseudocode as dijkstraPseudocode } from "@/algorithms/dijkstra";
 
