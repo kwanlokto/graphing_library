@@ -81,24 +81,36 @@ const searchAlgorithms = [
 ];
 
 export default function SearchAlgorithmsPage() {
-  const [index, setIndex] = useState(0);
   const [query, setQuery] = useState("");
+  const [selectedKey, setSelectedKey] = useState(searchAlgorithms[0].key);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Filter results
   const filteredAlgorithms = searchAlgorithms.filter((algo) =>
     algo.name.toLowerCase().includes(query.toLowerCase())
   );
 
-  const currentAlgo = filteredAlgorithms[index];
+  // Current algorithm object
+  const currentAlgo =
+    searchAlgorithms.find((a) => a.key === selectedKey) || null;
+
+  // Index of the selected algorithm within filtered results
+  const filteredIndex = filteredAlgorithms.findIndex(
+    (a) => a.key === selectedKey
+  );
 
   const handleNext = () => {
-    if (index < filteredAlgorithms.length - 1) setIndex(index + 1);
+    if (filteredIndex < filteredAlgorithms.length - 1) {
+      setSelectedKey(filteredAlgorithms[filteredIndex + 1].key);
+    }
   };
 
   const handlePrev = () => {
-    if (index > 0) setIndex(index - 1);
+    if (filteredIndex > 0) {
+      setSelectedKey(filteredAlgorithms[filteredIndex - 1].key);
+    }
   };
 
   return (
@@ -125,19 +137,21 @@ export default function SearchAlgorithmsPage() {
         fullWidth
         options={searchAlgorithms}
         getOptionLabel={(option) => option.name}
-        value={currentAlgo || null}
+        value={currentAlgo}
         isOptionEqualToValue={(a, b) => a.key === b?.key}
         onChange={(event, newValue) => {
-          const newIndex = filteredAlgorithms.findIndex(
-            (algo) => algo.key === newValue?.key
-          );
-          setQuery(newValue?.name || "");
-          setIndex(newIndex !== -1 ? newIndex : 0);
+          if (newValue) {
+            setSelectedKey(newValue.key);
+            setQuery(newValue.name);
+          }
         }}
         inputValue={query}
         onInputChange={(event, newInputValue) => {
           setQuery(newInputValue);
-          setIndex(0);
+          // Reset index after search
+          if (filteredAlgorithms.length > 0) {
+            setSelectedKey(filteredAlgorithms[0].key);
+          }
         }}
         renderInput={(params) => (
           <TextField
@@ -167,14 +181,11 @@ export default function SearchAlgorithmsPage() {
       <Stack
         direction="row"
         justifyContent="space-between"
-        sx={{
-          mt: 2,
-          px: 1,
-        }}
+        sx={{ mt: 2, px: 1 }}
       >
         <IconButton
           onClick={handlePrev}
-          disabled={index === 0}
+          disabled={filteredIndex <= 0}
           size={isMobile ? "small" : "medium"}
         >
           <MdOutlineKeyboardArrowLeft size={isMobile ? 22 : 28} />
@@ -182,7 +193,7 @@ export default function SearchAlgorithmsPage() {
 
         <IconButton
           onClick={handleNext}
-          disabled={index >= filteredAlgorithms.length - 1}
+          disabled={filteredIndex >= filteredAlgorithms.length - 1}
           size={isMobile ? "small" : "medium"}
         >
           <MdOutlineKeyboardArrowRight size={isMobile ? 22 : 28} />
