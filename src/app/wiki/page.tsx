@@ -119,16 +119,6 @@ export default function SearchAlgorithmsPage() {
         mx: "auto",
       }}
     >
-      {/* Title */}
-      <Typography
-        variant={isMobile ? "h5" : "h3"}
-        component="h1"
-        align="center"
-        gutterBottom
-      >
-        Algorithms
-      </Typography>
-
       {/* Search Bar */}
       <Autocomplete
         fullWidth
