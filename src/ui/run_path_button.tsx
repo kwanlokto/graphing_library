@@ -75,7 +75,7 @@ export const RunButton = ({
         sx={{
           color: "text.primary",
           letterSpacing: 0.5,
-          minHeight: "1.75rem", // adjust as needed to match font size
+          minHeight: { sm: "1.75rem" }, // adjust as needed to match font size
         }}
       >
         {pathStatus !== null ? pathStatus : ""}
@@ -90,11 +90,7 @@ export const RunButton = ({
           startIcon={!isRunning ? <IoMdPlayCircle /> : null}
           sx={buttonStyle}
         >
-          {isRunning ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            "Start"
-          )}
+          {isRunning ? <CircularProgress size={24} color="inherit" /> : "Start"}
         </Button>
       ) : (
         <Button

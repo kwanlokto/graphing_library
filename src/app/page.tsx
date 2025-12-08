@@ -54,9 +54,10 @@ const App = () => {
       {/* Top Row: Algorithm Selector and Theme Toggle */}
       <Stack
         direction={{ xs: "column", sm: "row" }}
-        spacing={{xs: 0, sm: 2}}
+        spacing={{ xs: 0, sm: 2 }}
         justifyContent="space-between"
         sx={{ width: "100%" }}
+        mb={2}
       >
         <AlgorithmSelector algorithm={algorithm} setAlgorithm={setAlgorithm} />
 

@@ -70,7 +70,6 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Stack
-          spacing={3}
           alignItems="center"
           sx={{
             maxWidth: "1280px",
