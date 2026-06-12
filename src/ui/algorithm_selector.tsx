@@ -26,7 +26,14 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
         variant="subtitle2"
         fontWeight={600}
         color="text.secondary"
-        sx={{ textTransform: "uppercase", letterSpacing: "0.04em", fontSize: "0.75rem" }}
+        sx={{
+          textTransform: "uppercase",
+          letterSpacing: "0.04em",
+          fontSize: "0.75rem",
+          height: { xs: "auto", sm: "28px" },
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         Algorithm
       </Typography>

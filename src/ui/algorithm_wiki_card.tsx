@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Typography, useMediaQuery, useTheme } from "@mu
 
 import { ReactElement } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 interface AlgorithmCardProps {
   name: string;
@@ -74,12 +74,11 @@ export default function AlgorithmWikiCard({
           >
             <SyntaxHighlighter
               language="text"
-              style={tomorrow}
+              style={theme.palette.mode === "dark" ? oneDark : oneLight}
               customStyle={{
                 margin: 0,
                 padding: isMobile ? "12px" : "16px",
                 fontSize: isMobile ? "0.75rem" : "0.85rem",
-                background: theme.palette.mode === "dark" ? "#1c1c1e" : "#f5f5f7",
               }}
               wrapLongLines={false}
             >

@@ -12,11 +12,11 @@ interface GridProps {
 
 // Apple system color palette
 const COLORS = {
-  start: "#0071e3", // blue
+  start: "#34c759", // green
   end: "#ff3b30", // red
-  wall: "#3a3a3c", // graphite
-  visiting: "#ffd60a", // yellow
-  path: "#34c759", // green
+  wall: "#48484a", // graphite
+  visiting: "#64d2ff", // light blue
+  path: "#0071e3", // blue
 };
 
 const getCellBgColor = (cell: CellType, emptyColor: string) => {

@@ -57,7 +57,7 @@ const App = () => {
           variant="h4"
           sx={{ color: "text.primary", mb: 0.5 }}
         >
-          Pathfinding Visualizer
+          Visual Pathfinding
         </Typography>
         <Typography variant="body1" sx={{ color: "text.secondary" }}>
           Draw walls, set a start and end point, and watch how each search

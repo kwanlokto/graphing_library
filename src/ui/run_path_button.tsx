@@ -82,7 +82,9 @@ export const RunButton = ({
               ? "#ff3b30"
               : "text.primary",
           letterSpacing: 0.2,
-          minHeight: { sm: "1.75rem" }, // adjust as needed to match font size
+          height: { xs: "auto", sm: "28px" },
+          display: "flex",
+          alignItems: "center",
         }}
       >
         {pathStatus !== null ? pathStatus : ""}

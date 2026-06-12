@@ -7,21 +7,15 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { FormControlLabel, Switch, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 
+import NavBar from "@/ui/navbar";
 import React from "react";
 
 const appleFontStack =
   '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
 
-export const ThemeRegistry = ({
-  navbar,
-  children,
-}: {
-  navbar?: React.ReactNode;
-  children: React.ReactNode;
-}) => {
+export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const mode = isDarkMode ? "dark" : "light";
 
@@ -197,7 +191,12 @@ export const ThemeRegistry = ({
           backgroundColor: theme.palette.background.default,
         }}
       >
-        {navbar && <Box sx={{ width: "100%" }}>{navbar}</Box>}
+        <Box sx={{ width: "100%" }}>
+          <NavBar
+            isDarkMode={isDarkMode}
+            onToggleDarkMode={() => setIsDarkMode((prev) => !prev)}
+          />
+        </Box>
         <Stack
           alignItems="center"
           sx={{
@@ -209,36 +208,6 @@ export const ThemeRegistry = ({
             backgroundColor: theme.palette.background.default,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              gap: 1,
-              width: "100%",
-              mb: 2,
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={isDarkMode}
-                  onChange={() => setIsDarkMode(!isDarkMode)}
-                  name="darkModeToggle"
-                />
-              }
-              labelPlacement="start"
-              label={
-                <Typography
-                  variant="body2"
-                  sx={{ color: "text.secondary", mr: 0.5 }}
-                >
-                  Dark Mode
-                </Typography>
-              }
-              sx={{ m: 0 }}
-            />
-          </Box>
           {children}
         </Stack>
       </Box>
