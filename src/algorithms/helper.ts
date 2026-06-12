@@ -172,6 +172,34 @@ export const randomlyPlaceWalls = (
 };
 
 /**
+ * Removes all walls from the grid, leaving start, end, and path state untouched.
+ *
+ * @param {GridType} grid - The grid to clear walls from.
+ * @returns {GridType} A new grid with every `isWall` flag set to `false`.
+ */
+export const clearWalls = (grid: GridType): GridType => {
+  return grid.map((row) => row.map((cell) => ({ ...cell, isWall: false })));
+};
+
+/**
+ * Clears any pathfinding results (visited, visiting, and path cells) so a new
+ * algorithm can be run against the same walls, start, and end positions.
+ *
+ * @param {GridType} grid - The grid to clear pathfinding state from.
+ * @returns {GridType} A new grid with `visited`, `isVisiting`, and `isPath` reset.
+ */
+export const clearPath = (grid: GridType): GridType => {
+  return grid.map((row) =>
+    row.map((cell) => ({
+      ...cell,
+      visited: false,
+      isVisiting: false,
+      isPath: false,
+    }))
+  );
+};
+
+/**
  * Creates a 2D grid (array of arrays) populated with a specified value.
  *
  * @param {number} numRows - The number of rows in the grid.

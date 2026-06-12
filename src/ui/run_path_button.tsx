@@ -1,18 +1,20 @@
 import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import { Coordinate, GridType } from "@/types/grid";
 import { Dispatch, SetStateAction, useState } from "react";
-import { IoMdPlayCircle, IoMdRefresh } from "react-icons/io";
 
 import { BFS } from "@/algorithms/bfs";
+import { IoMdPlayCircle } from "react-icons/io";
 import { aStar } from "@/algorithms/a_star";
 import { dijkstra } from "@/algorithms/dijkstra";
 import { greedyBestFirstSearch } from "@/algorithms/greedy_bfs";
 
 interface RunButtonProps {
   gridState: [GridType, Dispatch<SetStateAction<GridType>>];
-  resetGrid: () => void;
   algorithm: string;
+  disabled: boolean;
   setDisableGrid: Dispatch<SetStateAction<boolean>>;
+  pathStatus: string | null;
+  setPathStatus: Dispatch<SetStateAction<string | null>>;
 }
 
 const buttonStyle = {
@@ -32,13 +34,14 @@ const buttonStyle = {
 
 export const RunButton = ({
   gridState,
-  resetGrid,
   algorithm,
+  disabled,
   setDisableGrid,
+  pathStatus,
+  setPathStatus,
 }: RunButtonProps) => {
   const [grid, setGrid] = gridState;
   const [isRunning, setIsRunning] = useState(false);
-  const [pathStatus, setPathStatus] = useState<string | null>(null);
 
   const startPathfinding = async () => {
     setDisableGrid(true);
@@ -90,31 +93,16 @@ export const RunButton = ({
         {pathStatus !== null ? pathStatus : ""}
       </Typography>
 
-      {pathStatus === null ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={startPathfinding}
-          disabled={isRunning}
-          startIcon={!isRunning ? <IoMdPlayCircle /> : null}
-          sx={buttonStyle}
-        >
-          {isRunning ? <CircularProgress size={24} color="inherit" /> : "Start"}
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            resetGrid();
-            setPathStatus(null);
-          }}
-          startIcon={<IoMdRefresh />} // Add a refresh icon
-          sx={buttonStyle}
-        >
-          Reload
-        </Button>
-      )}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={startPathfinding}
+        disabled={isRunning || disabled}
+        startIcon={!isRunning ? <IoMdPlayCircle /> : null}
+        sx={buttonStyle}
+      >
+        {isRunning ? <CircularProgress size={24} color="inherit" /> : "Start"}
+      </Button>
     </Stack>
   );
 };

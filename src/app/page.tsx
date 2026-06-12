@@ -17,9 +17,11 @@ const App = () => {
   const [grid, setGrid] = useState<GridType>([]);
   const [disableGrid, setDisableGrid] = useState(false);
   const [algorithm, setAlgorithm] = useState("aStar");
+  const [pathStatus, setPathStatus] = useState<string | null>(null);
 
   const initGrid = () => {
     setDisableGrid(false);
+    setPathStatus(null);
     const localGrid = createEmptyGrid(15, 15);
     // Randomly generate start and end, ensuring they don't overlap
     const randomStart = getRandomCoordinate(15, 15);
@@ -77,15 +79,25 @@ const App = () => {
 
         <RunButton
           gridState={[grid, setGrid]}
-          resetGrid={initGrid}
           algorithm={algorithm}
+          disabled={disableGrid}
           setDisableGrid={setDisableGrid}
+          pathStatus={pathStatus}
+          setPathStatus={setPathStatus}
         />
       </Stack>
 
       {/* Full-width Grid */}
       <Box sx={{ width: "100%" }}>
-        <Grid grid={grid} setGrid={setGrid} disabled={disableGrid} />
+        <Grid
+          grid={grid}
+          setGrid={setGrid}
+          disabled={disableGrid}
+          setDisableGrid={setDisableGrid}
+          resetGrid={initGrid}
+          pathStatus={pathStatus}
+          setPathStatus={setPathStatus}
+        />
       </Box>
     </>
   );

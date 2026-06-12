@@ -1,13 +1,16 @@
 import { Box, Button, ButtonGroup, useMediaQuery, useTheme } from "@mui/material";
 import { CellType, GridType } from "@/types/grid";
-import React, { useRef, useState } from "react";
-
-import { randomlyPlaceWalls } from "@/algorithms/helper";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import { clearPath, clearWalls, randomlyPlaceWalls } from "@/algorithms/helper";
 
 interface GridProps {
   grid: GridType;
   setGrid: React.Dispatch<React.SetStateAction<GridType>>;
   disabled: boolean;
+  setDisableGrid: Dispatch<SetStateAction<boolean>>;
+  resetGrid: () => void;
+  pathStatus: string | null;
+  setPathStatus: Dispatch<SetStateAction<string | null>>;
 }
 
 // Apple system color palette
@@ -33,8 +36,17 @@ const getCellBgColor = (cell: CellType, emptyColor: string) => {
     : emptyColor;
 };
 
-const Grid = ({ grid, setGrid, disabled }: GridProps) => {
+const Grid = ({
+  grid,
+  setGrid,
+  disabled,
+  setDisableGrid,
+  resetGrid,
+  pathStatus,
+  setPathStatus,
+}: GridProps) => {
   const [editMode, setEditMode] = useState<"start" | "end" | "wall">("wall");
+  const isRunning = disabled && pathStatus === null;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pointerIdRef = useRef<number | null>(null);
   const lastTouchedRef = useRef<{ r: number; c: number } | null>(null);
@@ -263,6 +275,40 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
           }}
         >
           +20% Walls
+        </Button>
+
+        <Button
+          fullWidth
+          variant="outlined"
+          disabled={disabled}
+          onClick={() => {
+            setGrid((prev) => clearWalls(prev));
+          }}
+        >
+          Clear Walls
+        </Button>
+
+        <Button
+          fullWidth
+          variant="outlined"
+          disabled={isRunning}
+          onClick={() => {
+            setGrid((prev) => clearPath(prev));
+            setPathStatus(null);
+            setDisableGrid(false);
+          }}
+        >
+          Clear Path
+        </Button>
+
+        <Button
+          fullWidth
+          variant="contained"
+          color="error"
+          disabled={isRunning}
+          onClick={resetGrid}
+        >
+          Reset All
         </Button>
       </Box>
 
