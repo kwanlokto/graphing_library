@@ -22,15 +22,12 @@ export default function AlgorithmWikiCard({
 
   return (
     <Card
-      variant="outlined"
       sx={{
         mt: 3,
-        borderRadius: 2,
         overflow: "hidden",
         mx: "auto",
         width: "100%",
         maxWidth: 800,
-        boxShadow: 1,
       }}
     >
       <CardContent
@@ -70,7 +67,7 @@ export default function AlgorithmWikiCard({
             sx={{
               mt: 2,
               overflowX: "auto",
-              borderRadius: 1,
+              borderRadius: "12px",
               border: "1px solid",
               borderColor: "divider",
             }}
@@ -82,7 +79,7 @@ export default function AlgorithmWikiCard({
                 margin: 0,
                 padding: isMobile ? "12px" : "16px",
                 fontSize: isMobile ? "0.75rem" : "0.85rem",
-                background: theme.palette.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+                background: theme.palette.mode === "dark" ? "#1c1c1e" : "#f5f5f7",
               }}
               wrapLongLines={false}
             >

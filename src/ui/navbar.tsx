@@ -18,35 +18,62 @@ export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isDark = theme.palette.mode === "dark";
 
   return (
     <>
-      <AppBar position="static" color="primary">
-        <Toolbar>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backgroundColor: isDark
+            ? "rgba(28, 28, 30, 0.72)"
+            : "rgba(255, 255, 255, 0.72)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          color: "text.primary",
+        }}
+      >
+        <Toolbar sx={{ minHeight: { xs: 52, sm: 52 } }}>
           {/* Left side brand */}
           <Typography
-            variant="h6"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            variant="subtitle1"
+            sx={{
+              flexGrow: 1,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              cursor: "pointer",
+            }}
             component={Link}
             href="/"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Home
+            Pathfinder
           </Typography>
 
           {/* Mobile menu button */}
           {isMobile ? (
             <IconButton
-              color="inherit"
               edge="end"
               onClick={() => setDrawerOpen(true)}
+              sx={{ color: "text.primary" }}
             >
               <MdMenu />
             </IconButton>
           ) : (
             /* Desktop buttons */
             <Box>
-              <Button color="inherit" component={Link} href="/wiki">
+              <Button
+                component={Link}
+                href="/wiki"
+                sx={{
+                  color: "text.primary",
+                  fontWeight: 500,
+                  "&:hover": {
+                    backgroundColor: "action.hover",
+                  },
+                }}
+              >
                 Wiki
               </Button>
             </Box>
@@ -59,20 +86,29 @@ export default function NavBar() {
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        slotProps={{
+          paper: {
+            sx: {
+              backgroundColor: "background.paper",
+              backgroundImage: "none",
+            },
+          },
+        }}
       >
         <Box
           sx={{
-            width: 150,
+            width: 180,
             p: 2,
             display: "flex",
             flexDirection: "column",
-            gap: 2,
+            gap: 1,
           }}
         >
           <Button
             component={Link}
             href="/"
             onClick={() => setDrawerOpen(false)}
+            sx={{ justifyContent: "flex-start", color: "text.primary" }}
           >
             Home
           </Button>
@@ -80,6 +116,7 @@ export default function NavBar() {
             component={Link}
             href="/wiki"
             onClick={() => setDrawerOpen(false)}
+            sx={{ justifyContent: "flex-start", color: "text.primary" }}
           >
             Wiki
           </Button>

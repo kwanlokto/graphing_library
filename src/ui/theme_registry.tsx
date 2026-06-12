@@ -7,12 +7,21 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { FormControlLabel, Switch } from "@mui/material";
+import { FormControlLabel, Switch, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 
 import React from "react";
 
-export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
+const appleFontStack =
+  '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+export const ThemeRegistry = ({
+  navbar,
+  children,
+}: {
+  navbar?: React.ReactNode;
+  children: React.ReactNode;
+}) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const mode = isDarkMode ? "dark" : "light";
 
@@ -22,37 +31,158 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
         palette: {
           mode,
           background: {
-            default: mode === "light" ? "#fef8e7" : "#1a1a1a",
-            paper: mode === "light" ? "#fffaf2" : "#242424",
+            default: mode === "light" ? "#f5f5f7" : "#000000",
+            paper: mode === "light" ? "#ffffff" : "#1c1c1e",
           },
           text: {
-            primary: mode === "light" ? "#0a1f2a" : "#e8e8e8",
-            secondary: mode === "light" ? "#577683" : "#a8a8a8",
+            primary: mode === "light" ? "#1d1d1f" : "#f5f5f7",
+            secondary: mode === "light" ? "#6e6e73" : "#98989d",
           },
           primary: {
-            main: mode === "light" ? "#1a4d6b" : "#5aa5ff",
-            light: mode === "light" ? "#2c6b8f" : "#85c0ff",
-            dark: mode === "light" ? "#0d3449" : "#3a8eef",
+            main: mode === "light" ? "#0071e3" : "#0a84ff",
+            light: mode === "light" ? "#2f9bff" : "#5ac8fa",
+            dark: mode === "light" ? "#0058b8" : "#0060c0",
+            contrastText: "#ffffff",
           },
           secondary: {
-            main: mode === "light" ? "#c8944d" : "#f0c595",
-            light: mode === "light" ? "#ddb073" : "#ffdbba",
-            dark: mode === "light" ? "#a67535" : "#d9a870",
+            main: mode === "light" ? "#e8e8ed" : "#2c2c2e",
+            light: mode === "light" ? "#f5f5f7" : "#3a3a3c",
+            dark: mode === "light" ? "#d2d2d7" : "#1c1c1e",
+            contrastText: mode === "light" ? "#1d1d1f" : "#f5f5f7",
           },
-          divider: mode === "light" ? "#c9b895" : "#333333",
+          divider:
+            mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)",
           action: {
             hover:
               mode === "light"
-                ? "rgba(26, 77, 107, 0.10)"
-                : "rgba(90, 165, 255, 0.12)",
+                ? "rgba(0, 113, 227, 0.06)"
+                : "rgba(10, 132, 255, 0.10)",
             selected:
               mode === "light"
-                ? "rgba(26, 77, 107, 0.16)"
-                : "rgba(90, 165, 255, 0.16)",
+                ? "rgba(0, 113, 227, 0.10)"
+                : "rgba(10, 132, 255, 0.16)",
+          },
+        },
+        shape: {
+          borderRadius: 12,
+        },
+        typography: {
+          fontFamily: appleFontStack,
+          h1: { fontWeight: 600, letterSpacing: "-0.02em" },
+          h2: { fontWeight: 600, letterSpacing: "-0.02em" },
+          h3: { fontWeight: 600, letterSpacing: "-0.015em" },
+          h4: { fontWeight: 600, letterSpacing: "-0.01em" },
+          h5: { fontWeight: 600 },
+          h6: { fontWeight: 600 },
+          button: { fontWeight: 600, textTransform: "none" },
+        },
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: 10,
+                textTransform: "none",
+                fontWeight: 600,
+                boxShadow: "none",
+                transition: "all 0.15s ease",
+              },
+              contained: {
+                boxShadow: "none",
+                "&:hover": {
+                  boxShadow: "none",
+                },
+              },
+              outlined: ({ theme }) => ({
+                borderColor: theme.palette.divider,
+              }),
+            },
+          },
+          MuiButtonGroup: {
+            styleOverrides: {
+              root: {
+                borderRadius: 10,
+              },
+              grouped: {
+                borderRadius: 10,
+              },
+            },
+          },
+          MuiPaper: {
+            styleOverrides: {
+              root: {
+                backgroundImage: "none",
+              },
+            },
+          },
+          MuiCard: {
+            styleOverrides: {
+              root: ({ theme }) => ({
+                borderRadius: 18,
+                border: `1px solid ${theme.palette.divider}`,
+                boxShadow:
+                  theme.palette.mode === "light"
+                    ? "0 2px 24px rgba(0, 0, 0, 0.05)"
+                    : "0 2px 24px rgba(0, 0, 0, 0.4)",
+              }),
+            },
+          },
+          MuiSwitch: {
+            styleOverrides: {
+              root: {
+                width: 51,
+                height: 31,
+                padding: 0,
+              },
+              switchBase: {
+                padding: 2,
+                "&.Mui-checked": {
+                  transform: "translateX(20px)",
+                  color: "#fff",
+                  "& + .MuiSwitch-track": {
+                    backgroundColor: "#34c759",
+                    opacity: 1,
+                  },
+                },
+              },
+              thumb: {
+                width: 27,
+                height: 27,
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+              },
+              track: ({ theme }) => ({
+                borderRadius: 31 / 2,
+                backgroundColor:
+                  theme.palette.mode === "light" ? "#e9e9ea" : "#39393d",
+                opacity: 1,
+                transition: "background-color 0.2s ease",
+              }),
+            },
+          },
+          MuiOutlinedInput: {
+            styleOverrides: {
+              root: ({ theme }) => ({
+                borderRadius: 10,
+                backgroundColor:
+                  theme.palette.mode === "light" ? "#f5f5f7" : "#1c1c1e",
+                "& fieldset": {
+                  borderColor: "transparent",
+                },
+                "&:hover fieldset": {
+                  borderColor:
+                    theme.palette.mode === "light"
+                      ? "rgba(0, 0, 0, 0.1)"
+                      : "rgba(255, 255, 255, 0.1)",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: theme.palette.primary.main,
+                  borderWidth: 1,
+                },
+              }),
+            },
           },
         },
       }),
-    [isDarkMode]
+    [mode]
   );
 
   return (
@@ -63,28 +193,30 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 3,
-          padding: 2,
-          backgroundColor: theme.palette.background.default,
           minHeight: "100%",
+          backgroundColor: theme.palette.background.default,
         }}
       >
+        {navbar && <Box sx={{ width: "100%" }}>{navbar}</Box>}
         <Stack
           alignItems="center"
           sx={{
-            maxWidth: "1280px",
+            maxWidth: "1080px",
             width: "100%",
             margin: "0 auto",
-            px: { xs: 0, sm: 18 },
-            py: { xs: 0, sm: 4 },
+            px: { xs: 2, sm: 4, md: 6 },
+            py: { xs: 3, sm: 5 },
             backgroundColor: theme.palette.background.default,
           }}
         >
           <Box
             sx={{
               display: "flex",
+              alignItems: "center",
               justifyContent: "flex-end",
+              gap: 1,
               width: "100%",
+              mb: 2,
             }}
           >
             <FormControlLabel
@@ -93,12 +225,18 @@ export const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
                   checked={isDarkMode}
                   onChange={() => setIsDarkMode(!isDarkMode)}
                   name="darkModeToggle"
-                  color="primary"
                 />
               }
               labelPlacement="start"
-              label="Dark Mode"
-              sx={{ color: "text.primary" }}
+              label={
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.secondary", mr: 0.5 }}
+                >
+                  Dark Mode
+                </Typography>
+              }
+              sx={{ m: 0 }}
             />
           </Box>
           {children}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   createEmptyGrid,
@@ -51,6 +51,20 @@ const App = () => {
 
   return (
     <>
+      {/* Hero */}
+      <Box sx={{ width: "100%", mb: { xs: 3, sm: 4 } }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "text.primary", mb: 0.5 }}
+        >
+          Pathfinding Visualizer
+        </Typography>
+        <Typography variant="body1" sx={{ color: "text.secondary" }}>
+          Draw walls, set a start and end point, and watch how each search
+          algorithm finds its way.
+        </Typography>
+      </Box>
+
       {/* Top Row: Algorithm Selector and Theme Toggle */}
       <Stack
         direction={{ xs: "column", sm: "row" }}

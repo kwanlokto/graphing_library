@@ -119,6 +119,16 @@ export default function SearchAlgorithmsPage() {
         mx: "auto",
       }}
     >
+      {/* Header */}
+      <Box sx={{ mb: 1 }}>
+        <Typography variant="h4" sx={{ color: "text.primary", mb: 0.5 }}>
+          Algorithm Wiki
+        </Typography>
+        <Typography variant="body1" sx={{ color: "text.secondary" }}>
+          Browse how each pathfinding algorithm works, with pseudocode.
+        </Typography>
+      </Box>
+
       {/* Search Bar */}
       <Autocomplete
         fullWidth
@@ -177,6 +187,12 @@ export default function SearchAlgorithmsPage() {
           onClick={handlePrev}
           disabled={selectedIndex <= 0}
           size={isMobile ? "small" : "medium"}
+          sx={{
+            backgroundColor: "secondary.main",
+            color: "text.primary",
+            "&:hover": { backgroundColor: "secondary.dark" },
+            "&.Mui-disabled": { backgroundColor: "secondary.main", opacity: 0.4 },
+          }}
         >
           <MdOutlineKeyboardArrowLeft size={isMobile ? 22 : 28} />
         </IconButton>
@@ -185,6 +201,12 @@ export default function SearchAlgorithmsPage() {
           onClick={handleNext}
           disabled={selectedIndex >= searchAlgorithms.length - 1}
           size={isMobile ? "small" : "medium"}
+          sx={{
+            backgroundColor: "secondary.main",
+            color: "text.primary",
+            "&:hover": { backgroundColor: "secondary.dark" },
+            "&.Mui-disabled": { backgroundColor: "secondary.main", opacity: 0.4 },
+          }}
         >
           <MdOutlineKeyboardArrowRight size={isMobile ? 22 : 28} />
         </IconButton>

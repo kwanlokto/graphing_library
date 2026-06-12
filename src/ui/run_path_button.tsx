@@ -17,16 +17,17 @@ interface RunButtonProps {
 
 const buttonStyle = {
   minWidth: 175,
-  minHeight: 40,
-  fontSize: "1rem",
+  minHeight: 44,
+  fontSize: "0.95rem",
   fontWeight: 600,
   textTransform: "none",
-  boxShadow: 3,
+  borderRadius: "22px",
+  boxShadow: "none",
   "&:hover": {
-    boxShadow: 6,
-    transform: "translateY(-1px)",
+    boxShadow: "none",
+    opacity: 0.85,
   },
-  transition: "all 0.2s ease-in-out",
+  transition: "opacity 0.15s ease",
 };
 
 export const RunButton = ({
@@ -73,8 +74,14 @@ export const RunButton = ({
       <Typography
         variant="subtitle1"
         sx={{
-          color: "text.primary",
-          letterSpacing: 0.5,
+          fontWeight: 600,
+          color:
+            pathStatus === "Path Found!"
+              ? "#34c759"
+              : pathStatus === "Path Not Found!"
+              ? "#ff3b30"
+              : "text.primary",
+          letterSpacing: 0.2,
           minHeight: { sm: "1.75rem" }, // adjust as needed to match font size
         }}
       >

@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, useMediaQuery } from "@mui/material";
+import { Box, Button, ButtonGroup, useMediaQuery, useTheme } from "@mui/material";
 import { CellType, GridType } from "@/types/grid";
 import React, { useRef, useState } from "react";
 
@@ -10,18 +10,27 @@ interface GridProps {
   disabled: boolean;
 }
 
-const getCellBgColor = (cell: CellType) => {
+// Apple system color palette
+const COLORS = {
+  start: "#0071e3", // blue
+  end: "#ff3b30", // red
+  wall: "#3a3a3c", // graphite
+  visiting: "#ffd60a", // yellow
+  path: "#34c759", // green
+};
+
+const getCellBgColor = (cell: CellType, emptyColor: string) => {
   return cell.isStart
-    ? "#1976d2"
+    ? COLORS.start
     : cell.isEnd
-    ? "#d32f2f"
+    ? COLORS.end
     : cell.isWall
-    ? "#9e9e9e"
+    ? COLORS.wall
     : cell.isVisiting
-    ? "#ffeb3b"
+    ? COLORS.visiting
     : cell.isPath
-    ? "#00796b"
-    : "#e3f2fd";
+    ? COLORS.path
+    : emptyColor;
 };
 
 const Grid = ({ grid, setGrid, disabled }: GridProps) => {
@@ -31,7 +40,14 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
   const lastTouchedRef = useRef<{ r: number; c: number } | null>(null);
   const initialWallPaintValueRef = useRef<boolean | null>(null); // for toggle-on-drag behavior
 
+  const theme = useTheme();
   const isMobile = useMediaQuery("(max-width: 900px)");
+  const isDark = theme.palette.mode === "dark";
+
+  const emptyColor = isDark ? "#1c1c1e" : "#ffffff";
+  const emptyHoverColor = isDark ? "rgba(10, 132, 255, 0.25)" : "#d6ebff";
+  const wallHoverColor = "#58585a";
+  const gridLineColor = isDark ? "#2c2c2e" : "#e5e5ea";
 
   // Helper to deep-clone grid and edit safely
   const cloneGrid = (fn: (g: GridType) => GridType) => {
@@ -261,6 +277,11 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
           display: "grid",
           gridTemplateColumns: `repeat(${grid[0]?.length}, 1fr)`,
           gridTemplateRows: `repeat(${grid.length}, 1fr)`,
+          gap: "1px",
+          backgroundColor: gridLineColor,
+          border: `1px solid ${gridLineColor}`,
+          borderRadius: "16px",
+          overflow: "hidden",
           touchAction: "none", // allow touch dragging
           // userSelect: "none" can help avoid accidental text selection
           userSelect: "none",
@@ -278,13 +299,17 @@ const Grid = ({ grid, setGrid, disabled }: GridProps) => {
               sx={{
                 width: "100%",
                 aspectRatio: "1/1",
-                backgroundColor: getCellBgColor(cell),
-                border: "1px solid #ccc",
+                backgroundColor: getCellBgColor(cell, emptyColor),
                 cursor: "pointer",
+                transition: "background-color 0.1s ease",
                 // provide hover visual (non-destructive)
                 ...(!disabled && {
                   "&:hover": {
-                    backgroundColor: cell.isWall ? "#616161" : "#bbdefb",
+                    backgroundColor: cell.isWall
+                      ? wallHoverColor
+                      : cell.isStart || cell.isEnd
+                      ? undefined
+                      : emptyHoverColor,
                   },
                 }),
               }}
